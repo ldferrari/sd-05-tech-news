@@ -193,9 +193,9 @@ Para a realização deste projeto, utilizaremos um banco de dados chamado `tech_
 
 1. Clone o repositório
 
-- `git clone https://github.com/tryber/sd-0x-tech-news.git`.
+- `git clone https://github.com/tryber/sd-05-tech-news.git`.
 - Entre na pasta do repositório que você acabou de clonar:
-  - `sd-0x-tech-news`
+  - `sd-05-tech-news`
 
 2. Crie o ambiente virtual para o projeto
 
@@ -234,13 +234,13 @@ Para a realização deste projeto, utilizaremos um banco de dados chamado `tech_
 
 7. Crie um novo `Pull Request` _(PR)_
 
-- Vá até a página de _Pull Requests_ do [repositório no _GitHub_](https://github.com/tryber/sd-0x-tech-news/pulls)
+- Vá até a página de _Pull Requests_ do [repositório no _GitHub_](https://github.com/tryber/sd-05-tech-news/pulls)
 - Clique no botão verde _"New pull request"_
 - Clique na caixa de seleção _"Compare"_ e escolha a sua branch **com atenção**
 - Clique no botão verde _"Create pull request"_
 - Adicione uma descrição para o _Pull Request_ e clique no botão verde _"Create pull request"_
 - **Não se preocupe em preencher mais nada por enquanto!**
-- Volte até a [página de _Pull Requests_ do repositório](https://github.com/tryber/sd-0x-tech-news/pulls) e confira que o seu _Pull Request_ está criado
+- Volte até a [página de _Pull Requests_ do repositório](https://github.com/tryber/sd-05-tech-news/pulls) e confira que o seu _Pull Request_ está criado
 
 ---
 

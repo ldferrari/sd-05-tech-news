@@ -11,6 +11,7 @@ def fetch_content(url, timeout=3, delay=0.5):
         return response.text
     except OSError:
         print('Deu algum erro')
+        return ''
 
 
 def scrape(fetcher, pages=1):

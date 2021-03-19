@@ -1,39 +1,47 @@
 from tech_news import database
-import datetime
+from datetime import datetime
 
 
 REGEX = "$regex"
+OPTIONS = "$options"
 
 
 def search_by_title(title):
-    news = database.search_news({"title": {REGEX: title, "$options": "-i"}})
-    if len(news) == 0:
-        return news
+    NEWS = database.search_news({"title": {REGEX: title, OPTIONS: "-i"}})
+    if len(NEWS) == 0:
+        return NEWS
 
-    return [(news[0]["title"], news[0]["url"])]
+    return [(NEWS[0]["title"], NEWS[0]["url"])]
 
 
 def search_by_date(date):
     try:
-        new_date = datetime.datetime.strptime(date, "%Y-%m-%d")
-        print(new_date)
-        news = database.search_news({"timestamp": {REGEX: date}})
+        datetime.strptime(date, "%Y-%m-%d")
+
+        NEWS = database.search_news({"timestamp": {REGEX: date}})
     except ValueError:
         raise ValueError("Data inválida")
     else:
-        if len(news) == 0:
-            return news
-        return [(news[0]["title"], news[0]["url"])]
+        if len(NEWS) == 0:
+            return NEWS
+        return [(NEWS[0]["title"], NEWS[0]["url"])]
 
 
 def search_by_source(source):
-    news = database.search_news({"sources": {REGEX: source, "$options": "-i"}})
+    NEWS = database.search_news({"sources": {REGEX: source, OPTIONS: "-i"}})
 
-    if len(news) == 0:
-        return news
+    if len(NEWS) == 0:
+        return NEWS
 
-    return [(news[0]["title"], news[0]["url"])]
+    return [(NEWS[0]["title"], NEWS[0]["url"])]
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    NEWS = database.search_news(
+        {"categories": {REGEX: category, OPTIONS: "-i"}}
+    )
+
+    if len(NEWS) == 0:
+        return NEWS
+
+    return [(NEWS[0]["title"], NEWS[0]["url"])]

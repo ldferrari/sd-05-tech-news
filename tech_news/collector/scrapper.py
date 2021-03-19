@@ -1,5 +1,6 @@
 import requests
 from time import sleep
+from parsel import Selector
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -15,4 +16,6 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 
 def scrape(fetcher, pages=1):
-    """Seu código deve vir aqui"""
+    page = Selector(text=fetcher)
+    url = page.css('head link::attr(href)')[20].get()
+    print(url)

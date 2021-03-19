@@ -27,27 +27,30 @@ def fetch_content(url, timeout=3, delay=0.5):
 # fetch_content("https://httpbin.org/status/404")
 # fetch_content("https://httpbin.org/delay/10")
 
-URL_BASE = "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/155000-musk-tesla-carros-totalmente-autonomos.htm"
-
 
 def scrape(fetcher, pages=1):
-    response_text = fetcher(URL_BASE)
+    response_text = fetcher
+
+    print(response_text)
+
     selector = Selector(response_text)
 
-    title = selector.css("#js-article-title ::text").get()
-    print(title)
+    url = selector.css("#js-article-title ::text").get().strip()
 
-    timestamp = selector.css("#js-article-date ::attr(datetime)").get()
-    print(timestamp)
+    title = selector.css("#js-article-title ::text").get().strip()
+    # print(title)
 
-    author = selector.css(".tec--author__info__link ::text").get()
-    print(author)
+    timestamp = selector.css("#js-article-date ::attr(datetime)").get().strip()
+    # print(timestamp)
+
+    author = selector.css(".tec--author__info__link ::text").get().strip()
+    # print(author)
 
     shares_count_dirty = selector.css(".tec--toolbar__item ::text").getall()[3]
     shares_count = [int(i) for i in shares_count_dirty.split() if i.isdigit()][
         0
     ]
-    print(shares_count)
+    # print(shares_count)
 
     comments_count_dirty = selector.css(".tec--toolbar__item ::text").getall()[
         8
@@ -55,13 +58,34 @@ def scrape(fetcher, pages=1):
     comments_count = [
         int(i) for i in comments_count_dirty.split() if i.isdigit()
     ][0]
-    print(comments_count)
+    # print(comments_count)
 
-    # selector.xpath('//div[@id="p402_premium"]/p/text()').get()
-    #  selector.xpath('//div[@id="p402_premium"]/p/text()').get()
-    summary = selector.css(".p402_premium > p *::text").getall()
+    summary_list = selector.css(".p402_premium > p *::text").getall()
+    summary = "".join([str(elem) for elem in summary_list])
+    # print(summary)
 
-    print(summary)
+    sources = selector.css(".tec--badge *::text").get().strip()
+    # print(sources)
+
+    categories_dirty = selector.css("#js-categories > a *::text").getall()
+    categories = [elem.strip() for elem in categories_dirty]
+    # print(categories)
+
+    return [
+        {
+            "url": ????????????????????????/,
+            "title": title,
+            "timestamp": timestamp,
+            "writer": author,
+            "shares_count": shares_count,
+            "comments_count": comments_count,
+            "summary": summary,
+            "sources": [sources],
+            "categories": categories,
+        }
+    ]
+
+URL_BASE = "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/155000-musk-tesla-carros-totalmente-autonomos.htm"
 
 
-scrape(fetcher=fetch_content, pages=2)
+print(scrape(fetcher=fetch_content(URL_BASE), pages=2))

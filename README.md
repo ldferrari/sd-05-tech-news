@@ -182,8 +182,8 @@ Para a realização deste projeto, utilizaremos um banco de dados chamado `tech_
 
 ## Data de Entrega
 
-  - Serão `X` dias de projeto.
-  - Data de entrega para avaliação final do projeto: `DD/MM/YYYY - 14:00h`.
+  - Serão `7` dias de projeto.
+  - Data de entrega para avaliação final do projeto: `29/03/2021 - 14:00h`.
 
 ---
 

@@ -182,7 +182,7 @@ Para a realização deste projeto, utilizaremos um banco de dados chamado `tech_
 
 ## Data de Entrega
 
-  - Serão `2` dias de projeto.
+  - Serão `7` dias de projeto.
   - Data de entrega para avaliação final do projeto: `29/03/2021 - 14:00h`.
 
 ---

@@ -7,8 +7,13 @@ from sys import argv
 
 Classes = {
     "card": ".tec--card",
-    "link": "div.tec--list__item",
-    "title": ".tec--card__title"
+    "link": "div.tec--list__item > article > div > h3 > a::attr(href)",
+    "title": ".tec--card__title", 
+    "shares_count": "div.tec--toolbar__item:nth-child(1)::text",
+    "comments": "#js-comments-btn::attr(data-count)",
+    "sources": ".z--mb-16 > div > a::text",
+    "categories": "div.z--w-1-3 > ul > li > a::text",
+    "summary": ".tec--article__body > p:nth-child(1)::text"
 }
 
 
@@ -29,21 +34,23 @@ def fetch_content(url, timeout=3, delay=0.5):
 def scrape(fetcher, pages=1):
     """Seu código deve vir aqui"""
     url = "http://techmundo.com.br/novidades"
-    # url = "http://127.0.0.1:5500/tests/test_collector/index.html"
+    if __name__ == '__main__':
+        url = "http://127.0.0.1:5500/tests/test_collector/index.html"
+    url2 = "http://127.0.0.1:5500/tests/test_collector/notice.html"
     all_news = []
     news_links = []
     parsed_news = []
     for _ in range(pages):
         news = []
         selector = Selector(text=fetcher(url)) 
-        # breakpoint()
-        # link_selector = f'{Classes["link"]}'
         news_links.extend(selector.css(Classes["link"]).getall())
-    print(">>>: ", len(news_links))
+    if __name__ == '__main__':
+        news_links = [url2]
     for link in news_links:
         all_news.append({"url": link, 'response': fetcher(link)})
     for news in all_news:
         parsed_news.append(parse_news(news))
+    print(">>>>>>: ", len(news_links), '\n', news_links)
     return parsed_news
 
 
@@ -55,18 +62,17 @@ def parse_news(news):
     parsed_news["title"] = selector.css('#js-article-title::text').get().strip()
     parsed_news["timestamp"] = selector.css('#js-article-date::attr(datetime)').get().strip()
     parsed_news["writer"] = selector.css('.tec--author__info__link::text').get().strip()
-    counts = selector.css('.tec--toolbar__item::text').getall()
-    # shares_count = counts[1].strip()
-    # shares_count = int(shares_count.split()[0])
-    # summary = selector.css('meta::attr(content)').getall()[1]
-    # parsed_news["summary"] = summary
-    # parsed_news["shares_count"] = shares_count
-    comments = selector.css('#js-comments-btn::text').getall()[1].strip()
-    comments = int(comments.split()[0])
+    shares_count = selector.css(Classes['shares_count']).get().strip()
+    shares_count = int(shares_count.split()[0])
+    parsed_news['shares_count'] = shares_count
+    summary = selector.css(Classes["summary"]).get().strip()
+    parsed_news["summary"] = summary
+    comments = selector.css(Classes['comments']).get()
+    comments = int(comments)
     parsed_news["comments_count"] = comments
-    sources = selector.css('.z--mb-16 .tec--badge::text').getall()
+    sources = selector.css(Classes['sources']).getall()
     parsed_news["sources"] = [src.strip() for src in sources]
-    categories = selector.css('#js-categories a::text').getall()
+    categories = selector.css(Classes["categories"]).getall()
     parsed_news["categories"] = [cat.strip() for cat in categories]
     return parsed_news
 
@@ -75,5 +81,5 @@ if __name__ == '__main__':
     url = "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/155000-musk-tesla-carros-totalmente-autonomos.htm"
     # if argv[1] or argv[1] != '':
     #     url = argv[1]
-    result = scrape(fetch_content)
+    result = scrape(fetcher=fetch_content)
     print(result)

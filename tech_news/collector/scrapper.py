@@ -1,19 +1,16 @@
 import requests
 from parsel import Selector
 from time import sleep
-from enum import Enum
-from sys import argv
-
 
 Classes = {
     "card": ".tec--card",
     "link": "div.tec--list__item > article > figure > a::attr(href)",
-    "title": ".tec--card__title", 
+    "title": ".tec--card__title",
     "shares_count": "div.tec--toolbar__item:nth-child(1)::text",
     "comments_count": "#js-comments-btn::attr(data-count)",
     "sources": ".z--mb-16 > div > a::text",
     "categories": "a.tec--badge--primary::text",
-    "summary": ".tec--article__body > p:nth-child(1)::text"
+    "summary": ".tec--article__body > p:nth-child(1)::text",
 }
 
 
@@ -26,7 +23,7 @@ def fetch_content(url, timeout=3, delay=0.5):
         return ""
     else:
         if response.status_code != 200:
-            return ''
+            return ""
         sleep(delay)
         return response.text
 
@@ -34,40 +31,35 @@ def fetch_content(url, timeout=3, delay=0.5):
 def scrape(fetcher, pages=1):
     """Seu código deve vir aqui"""
     url = "https://www.tecmundo.com.br/novidadess"
-    if __name__ == '__main__':
-        url = "http://127.0.0.1:5500/tests/test_collector/index.html"
-    url2 = "http://127.0.0.1:5500/tests/test_collector/notice.html"
     news_links = []
     all_news = []
     parsed_news = []
     for pageId in range(pages):
-        selector = Selector(text=fetcher(url)) 
+        selector = Selector(text=fetcher(url))
         news_links.extend(selector.css(Classes["link"]).getall())
         url += f"?pages={pageId+2}"
-    if __name__ == '__main__':
-        news_links = [url2]
     for link in news_links:
-        all_news.append({"url": link, 'response': fetcher(link)})
+        all_news.append({"url": link, "response": fetcher(link)})
     for news in all_news:
         parsed_news.append(parse_news(news))
     return parsed_news
 
 
 def parse_news(news):
-    selector = Selector(text=news['response'])
-    title = selector.css('#js-article-title::text').get().strip()
-    timestamp = selector.css('#js-article-date::attr(datetime)').get().strip()
-    writer = selector.css('.tec--author__info__link::text').get()
-    shares_count = selector.css(Classes['shares_count']).get().strip()
+    selector = Selector(text=news["response"])
+    title = selector.css("#js-article-title::text").get().strip()
+    timestamp = selector.css("#js-article-date::attr(datetime)").get().strip()
+    writer = selector.css(".tec--author__info__link::text").get()
+    shares_count = selector.css(Classes["shares_count"]).get().strip()
     shares_count = int(shares_count.split()[0])
     summary = selector.css(Classes["summary"]).get().strip()
-    comments_count = selector.css(Classes['comments_count']).get()
+    comments_count = selector.css(Classes["comments_count"]).get()
     comments_count = int(comments_count)
-    sources = selector.css(Classes['sources']).getall()
+    sources = selector.css(Classes["sources"]).getall()
     sources = [src for src in sources]
     categories = selector.css(Classes["categories"]).getall()
     return {
-        "url": news['url'],
+        "url": news["url"],
         "title": title,
         "timestamp": timestamp,
         "writer": writer,
@@ -79,6 +71,6 @@ def parse_news(news):
     }
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     result = scrape(fetcher=fetch_content)
     print(result)

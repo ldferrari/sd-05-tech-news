@@ -1,35 +1,33 @@
 import requests
-import time
+from time import sleep
 from parsel import Selector
 
 
 def fetch_content(url, timeout=3, delay=0.5):
-    response = requests.get(url, timeout=timeout)
-    time.sleep(delay)
-    success_status = 200
-    if response.status_code != success_status:
+    try:
+        response = requests.get(url, timeout=timeout)
+    except requests.RequestException:
         return ""
-    return response.text
+    else:
+        success_status = 200
+        if response.status_code != success_status:
+            return ""
+        sleep(delay)
+        return response.text
 
 
 def scrape(fetcher, pages=1):
-    actual_page = pages
     url = "https://www.tecmundo.com.br/novidades"
-    if pages > 1:
-        url = "https://www.tecmundo.com.br/novidades?page=" + str(actual_page)
-
     results = []
-    while actual_page <= pages:
-        main_url = "https://www.tecmundo.com.br/novidades?page=" + str(
-            actual_page
-        )
-        response = fetcher(main_url)
+    for page in range(pages):
+        print(url)
+        response = fetcher(url)
         selector = Selector(text=response)
         news_urls = selector.css(
-            ".tec--list--lg h3 a.tec--card__title__link::attr(href)"
+            "div.tec--list__item > article > figure > a::attr(href)"
         ).getall()
-        for url in news_urls:
-            response_new = fetcher(url)
+        for new_url in news_urls:
+            response_new = fetcher(new_url)
             selector_new = Selector(text=response_new)
             build_scrap = builder(selector_new)
             corrected_scrap = correction(
@@ -39,7 +37,7 @@ def scrape(fetcher, pages=1):
             )
 
             new_result = {
-                "url": url,
+                "url": new_url,
                 "title": build_scrap["title"],
                 "timestamp": build_scrap["timestamp"],
                 "writer": build_scrap["writer"],
@@ -50,13 +48,13 @@ def scrape(fetcher, pages=1):
                 "categories": build_scrap["categories"],
             }
             results.append(new_result)
-        actual_page += 1
+            url += f"?page={page+2}"
 
     return results
 
 
 def correction(shares_count, comments_count, summary):
-    if shares_count and shares_count[0] != "number":
+    if shares_count and shares_count[0] != "":
         shares_count = int("".join(shares_count))
     else:
         shares_count = 0
@@ -76,25 +74,29 @@ def correction(shares_count, comments_count, summary):
 
 def builder(selector_new):
     title = selector_new.css("h1.tec--article__header__title::text").get()
+
     timestamp = selector_new.css(
         ".tec--timestamp__item time::attr(datetime)"
     ).get()
+
     writer = selector_new.css(
         "div.tec--author__info a.tec--author__info__link::text"
     ).get()
+
     shares_count = selector_new.css("div.tec--toolbar__item::text").re(r"\d")
+
     comments_count = selector_new.css(
         "div.tec--toolbar__item button.tec--btn::attr(data-count)"
     ).get()
+
     summary = selector_new.css(
         "div.tec--article__body p:first-child *::text"
     ).getall()
+
     sources = selector_new.css(
-        "div.tec--author__info p.z--m-none a.tec--link::text"
+        ".z--mb-16 > div > a::text"
     ).getall()
-    categories = selector_new.css(
-        "div.z--px-16 div.js-categories a::text"
-    ).getall()
+    categories = selector_new.css("#js-categories > a::text").getall()
 
     return {
         "title": title,

@@ -52,18 +52,16 @@ def scrape(fetcher, pages=1):
 
 
 def correction(shares_count, comments_count, summary):
-    try:
+    if shares_count != "None":
         shares_count = int("".join(shares_count))
-    except Exception:
+    else:
         shares_count = 0
-    try:
+    if comments_count != "None":
         comments_count = int(comments_count)
-    except Exception:
+    else:
         comments_count = 0
-    try:
+    if summary != "":
         summary = "".join(summary)
-    except Exception:
-        summary = ""
 
     return {
         "shares_count": shares_count,

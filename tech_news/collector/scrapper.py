@@ -57,9 +57,9 @@ def scrape(fetcher, pages=1):
             summary = "div.tec--article__body p"
             summary = selector2.css(summary).getall()
             summary = summary[0].strip()
-            sources = "div.z--mb-16 div"
+            """sources = "div.z--mb-16 div"
             sources = selector2.css(sources).getall()
-            print(type(sources[0]))
+            print(type(sources[0]))"""
             dados = {
                 "url": x,
                 "title": selector2.css(title)[0].extract().strip(),

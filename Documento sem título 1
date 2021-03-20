@@ -1,0 +1,11 @@
+url - ja puxou
+title - h1.tec--article__header__title
+timestamp - div.tec--timestamp__item time::datetime
+writer - a.tec--author__info__link
+shares_count - 
+comments_count - a.publisher-nav-color span.comment-count::text
+summary - div.tec--article__body firstchild
+sources - h2.class="z--text-base z--font-semibold z--mt-none z--mb-8" div a.tec--badge::text
+categories - div id=js-categories a.tec--badge--primary::text
+
+

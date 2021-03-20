@@ -13,7 +13,11 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 
 def scrape(fetcher, pages=1):
-    actual_page = 1
+    actual_page = pages
+    url = "https://www.tecmundo.com.br/novidades"
+    if pages > 1:
+        url = "https://www.tecmundo.com.br/novidades?page=" + str(actual_page)
+
     results = []
     while actual_page <= pages:
         main_url = "https://www.tecmundo.com.br/novidades?page=" + str(
@@ -25,7 +29,7 @@ def scrape(fetcher, pages=1):
             ".tec--list--lg h3 a.tec--card__title__link::attr(href)"
         ).getall()
         for url in news_urls:
-            response_new = fetcher(url, 3, 1)
+            response_new = fetcher(url)
             selector_new = Selector(text=response_new)
             build_scrap = builder(selector_new)
             corrected_scrap = correction(
@@ -52,11 +56,11 @@ def scrape(fetcher, pages=1):
 
 
 def correction(shares_count, comments_count, summary):
-    if shares_count != "None":
+    if shares_count and shares_count[0] != "number":
         shares_count = int("".join(shares_count))
     else:
         shares_count = 0
-    if comments_count != "None":
+    if comments_count and comments_count != "None":
         comments_count = int(comments_count)
     else:
         comments_count = 0

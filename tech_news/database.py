@@ -7,7 +7,7 @@ DB_PORT = config("DB_PORT", default="27017")
 client = MongoClient(host=DB_HOST, port=int(DB_PORT))
 db = client.tech_news
 
-
+ 
 def create_news(data):
     db.news.insert_many(data)
 

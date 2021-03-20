@@ -24,62 +24,83 @@ def scrape(fetcher, pages=1):
         news_urls = selector.css(
             ".tec--list--lg h3 a.tec--card__title__link::attr(href)"
         ).getall()
-        print(news_urls)
         for url in news_urls:
             response_new = fetcher(url, 3, 1)
             selector_new = Selector(text=response_new)
-            title = selector_new.css(
-                "h1.tec--article__header__title::text"
-            ).get()
-            timestamp = selector_new.css(
-                ".tec--timestamp__item time::attr(datetime)"
-            ).get()
-            writer = selector_new.css(
-                "div.tec--author__info a.tec--author__info__link::text"
-            ).get()
-            shares_count = selector_new.css("div.tec--toolbar__item::text").re(
-                r"\d"
+            build_scrap = builder(selector_new)
+            corrected_scrap = correction(
+                build_scrap["shares_count"],
+                build_scrap["comments_count"],
+                build_scrap["summary"],
             )
-            comments_count = selector_new.css(
-                "div.tec--toolbar__item button.tec--btn::attr(data-count)"
-            ).get()
-            summary = selector_new.css(
-                "div.tec--article__body p:first-child *::text"
-            ).getall()
-            sources = selector_new.css(
-                "div.tec--author__info p.z--m-none a.tec--link::text"
-            ).getall()
-            categories = selector_new.css(
-                "div.z--px-16 div.js-categories a::text"
-            ).getall()
-
-            try:
-                share_count = int("".join(shares_count))
-            except Exception:
-                share_count = 0
-            try:
-                comments_count = int(comments_count)
-            except Exception:
-                comments_count = 0
-            try:
-                summary = "".join(summary)
-            except Exception:
-                summary = ""
 
             new_result = {
                 "url": url,
-                "title": title,
-                "timestamp": timestamp,
-                "writer": writer,
-                "shares_count": share_count,
-                "comments_count": comments_count,
-                "summary": summary,
-                "sources": sources,
-                "categories": categories,
+                "title": build_scrap["title"],
+                "timestamp": build_scrap["timestamp"],
+                "writer": build_scrap["writer"],
+                "shares_count": corrected_scrap["shares_count"],
+                "comments_count": corrected_scrap["comments_count"],
+                "summary": corrected_scrap["summary"],
+                "sources": build_scrap["sources"],
+                "categories": build_scrap["categories"],
             }
-            print(summary)
             results.append(new_result)
         actual_page += 1
 
-    print(results)
     return results
+
+
+def correction(shares_count, comments_count, summary):
+    try:
+        shares_count = int("".join(shares_count))
+    except Exception:
+        shares_count = 0
+    try:
+        comments_count = int(comments_count)
+    except Exception:
+        comments_count = 0
+    try:
+        summary = "".join(summary)
+    except Exception:
+        summary = ""
+
+    return {
+        "shares_count": shares_count,
+        "comments_count": comments_count,
+        "summary": summary,
+    }
+
+
+def builder(selector_new):
+    title = selector_new.css("h1.tec--article__header__title::text").get()
+    timestamp = selector_new.css(
+        ".tec--timestamp__item time::attr(datetime)"
+    ).get()
+    writer = selector_new.css(
+        "div.tec--author__info a.tec--author__info__link::text"
+    ).get()
+    shares_count = selector_new.css("div.tec--toolbar__item::text").re(r"\d")
+    comments_count = selector_new.css(
+        "div.tec--toolbar__item button.tec--btn::attr(data-count)"
+    ).get()
+    summary = selector_new.css(
+        "div.tec--article__body p:first-child *::text"
+    ).getall()
+    sources = selector_new.css(
+        "div.tec--author__info p.z--m-none a.tec--link::text"
+    ).getall()
+    categories = selector_new.css(
+        "div.z--px-16 div.js-categories a::text"
+    ).getall()
+
+    return {
+        "title": title,
+        "timestamp": timestamp,
+        "writer": writer,
+        "shares_count": shares_count,
+        "comments_count": comments_count,
+        "summary": summary,
+        "sources": sources,
+        "categories": categories,
+    }

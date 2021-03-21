@@ -15,7 +15,8 @@ def connection(base="tech_news"):
 
 
 def find_cursor(
-    params={}, projection={"_id": 0}, collection="news", conn=connection
+    params={}, projection={"_id": 0}, collection="news", conn=connection,
+    agg=True
 ):
     """
     DEFINITIONS:
@@ -25,5 +26,7 @@ def find_cursor(
         conn: type FUNCTION, Conexão a ser usada, default connection
     """
     db = conn()
+    if agg:
+        return list(db[collection].aggregate(params))
     result = list(db[collection].find(params, projection))
     return result

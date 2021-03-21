@@ -1,4 +1,3 @@
-from datetime import date as dt
 from tech_news.model import tech_news_model
 
 cursor = tech_news_model.find_cursor

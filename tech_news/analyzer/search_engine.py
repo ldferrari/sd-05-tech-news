@@ -49,3 +49,9 @@ def search_by_source(source):
 
 def search_by_category(category):
     """Seu código deve vir aqui"""
+    PARAMS = {"categories": {"$regex": category, "$options": "i"}}
+    search = cursor(params=PARAMS, projection=PROJECTION)
+    if len(search) == 0:
+        return []
+    result = [tuple(reversed(item.values())) for item in search]
+    return result

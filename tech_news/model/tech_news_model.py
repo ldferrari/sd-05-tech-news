@@ -15,8 +15,11 @@ def connection(base="tech_news"):
 
 
 def find_cursor(
-    params={}, projection={"_id": 0}, collection="news", conn=connection,
-    agg=True
+    params={},
+    projection={"_id": 0},
+    collection="news",
+    conn=connection,
+    agg=False,
 ):
     """
     DEFINITIONS:
@@ -24,6 +27,7 @@ def find_cursor(
         projection: type DICT, default {"_id": 0}
         collection: type STRING, coleção de busca, default 'news'
         conn: type FUNCTION, Conexão a ser usada, default connection
+        agg: type BOOLEAN, Define se usa find (False), ou aggregate (True)
     """
     db = conn()
     if agg:

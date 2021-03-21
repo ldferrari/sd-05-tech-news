@@ -1,5 +1,6 @@
 import csv
 from pymongo import MongoClient
+from tech_news.model import tech_news_model
 
 NEW_NOTICE = {
     "url": "https://www.tecmundo.com.br/brincadeira-levadaserio.htm",
@@ -14,11 +15,7 @@ NEW_NOTICE = {
 }
 
 
-def cursor():
-    with MongoClient() as client:
-        db = client.tech_news
-        news = list(db.news.find({}, {'_id': 0}))
-        return news
+cursor = tech_news_model.find_cursor
 
 
 def parse_list(data):
@@ -34,7 +31,6 @@ def parse_list(data):
 def csv_exporter(filepath, cur=cursor):
     """Seu código deve vir aqui"""
     try:
-        print(filepath)
         assert filepath.endswith('.csv')
     except AssertionError:
         raise ValueError("Formato invalido")

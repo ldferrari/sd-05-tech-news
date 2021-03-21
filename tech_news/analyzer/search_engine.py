@@ -40,6 +40,12 @@ def search_by_date(date, validator=validate_date):
 
 def search_by_source(source):
     """Seu código deve vir aqui"""
+    PARAMS = {"sources": {"$regex": source, "$options": "i"}}
+    search = cursor(params=PARAMS, projection=PROJECTION)
+    if len(search) == 0:
+        return []
+    result = [tuple(reversed(item.values())) for item in search]
+    return result
 
 
 def search_by_category(category):

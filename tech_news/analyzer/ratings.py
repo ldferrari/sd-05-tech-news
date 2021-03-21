@@ -1,3 +1,4 @@
+from operator import itemgetter
 from tech_news.model import tech_news_model
 
 cursor = tech_news_model.find_cursor
@@ -37,3 +38,12 @@ def top_5_news():
 
 def top_5_categories():
     """Seu código deve vir aqui"""
+    get_categories = cursor(projection={"categories": True, "_id": False})
+    cat = []
+    for item in get_categories:
+        cat.extend(item['categories'])
+    contagem = {key: cat.count(key) for key in set(cat)}
+    categories = [
+        k for k, v in sorted(contagem.items(), key=itemgetter(1, 0))
+    ]
+    return categories[:5]

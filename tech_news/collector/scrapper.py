@@ -3,29 +3,11 @@ import requests
 from time import sleep
 
 
-def get_summary(text=''):
-    selector = Selector(text)
-    summary = selector.css("p").getall()
-    summary = map(
-      lambda text: ''.join(Selector(text).css("*::text").getall()),
-      summary
-    )
-    return ''.join(list(summary))
-
-
 def count_shares(text=''):
     text = ''.join(text)
     start = text.find('</svg>')
     end = text.find('Compartilharam\n')
     return int([int(s) for s in text[start:end].split() if s.isdigit()][0])
-
-
-def fix_list(list_data=[]):
-    result = map(
-      lambda text: ' '.join(text.split()),
-      list_data,
-    )
-    return list(result)
 
 
 def fetch_content(url, timeout=3, delay=0.5):

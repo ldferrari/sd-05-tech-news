@@ -18,12 +18,11 @@ def fetch_content(url, timeout=3, delay=0.5):
 def scrape(fetcher, pages=1):
     base_url = "https://www.tecmundo.com.br/novidades"
     selector = Selector(fetcher(base_url))
-    items = selector.css(".tec--card__info h3 a::attr(href)").getall()
-    news = []
-    # print(items)
+    urls = selector.css(".tec--card__info h3 a::attr(href)").getall()
+    news_list = []
 
-    for item in items:
-        content = fetcher(item)
+    for url in urls:
+        content = fetcher(url)
         selector = Selector(text=content)
         title = selector.css("#js-article-title::text").get()
         writer = selector.css(".tec--author__info__link::text").get()
@@ -36,9 +35,9 @@ def scrape(fetcher, pages=1):
         sources = selector.css(".z--mb-16 > div a::text").getall()
         categories = selector.css("#js-categories a::text").getall()
 
-        news.append(
+        news_list.append(
             {
-                "url": item,
+                "url": url,
                 "title": title,
                 "timestamp": timestamp,
                 "writer": writer,
@@ -50,5 +49,4 @@ def scrape(fetcher, pages=1):
             }
         )
 
-    # print(news)
-    return news
+    return news_list

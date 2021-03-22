@@ -17,8 +17,8 @@ def csv_importer(filepath):
         dicionario = {}
         acc = 0
         for item in header:
-            dicionario[item] = data[acc]
-            acc += 1
+            dicionario[item] = data[item]
+        #    acc += 1
         # if header != 'url;title;timestamp;writer;shares_count;comments_count;
         # summary;sources;categories':
         #    raise Exception("Cabeçalho errado")

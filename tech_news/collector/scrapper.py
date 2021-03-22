@@ -1,5 +1,5 @@
 import requests
-import time
+from time import sleep
 from parsel import Selector
 
 URL_BASE = "https://www.tecmundo.com.br/novidades"
@@ -16,7 +16,7 @@ def fetch_content(url, timeout=3, delay=0.5):
 
     if response.status_code and response.status_code == 200:
         # print(response)
-        time.sleep(delay)
+        sleep(delay)
         # print('returning response text')
         return response.text
 
@@ -69,7 +69,7 @@ def scrape(fetcher, pages=1):
                     "shares_count": shares_count,
                     "comments_count": comments_count,
                     "summary": summary,
-                    "sources": [sources],
+                    "sources": sources,
                     "categories": categories,
                 }
             )

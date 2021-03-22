@@ -1,5 +1,5 @@
+from tech_news.database import search_news
 import datetime
-from tech_news.database import db, search_news
 
 
 def title_url_tuple_maker(data):

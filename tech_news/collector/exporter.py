@@ -32,5 +32,3 @@ def csv_exporter(filepath):
 
         csvWriter.writeheader()
         csvWriter.writerows(news_list)
-
-        

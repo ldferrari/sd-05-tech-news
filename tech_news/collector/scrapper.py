@@ -58,7 +58,9 @@ def scrape(fetcher, pages=1):
 
             sources = selector_url.css(".z--mb-16 a::text").getall()
 
-            categories = selector_url.css("a.tec--badge--primary::text").getall()
+            categories = selector_url.css(
+                "a.tec--badge--primary::text"
+            ).getall()
 
             list_news.append(
                 {

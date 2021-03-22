@@ -1,41 +1,43 @@
-from sys import exit
-from tech_news.collector import exporter, importer, scrapper
+import sys
+from tech_news.collector.importer import csv_importer
+from tech_news.collector.exporter import csv_exporter
+from tech_news.collector.scrapper import scrape, fetch_content
+from tech_news.analyzer.ratings import top_5_news, top_5_categories
+
+from tech_news.database import create_news
 
 
 def execute_option(answer):
     option = ""
     if answer == "1":
-        print("Digite o nome do arquivo CSV a ser importado:")
-        option = input()
-        importer.csv_importer(option)
+        option = input("Digite o nome do arquivo CSV a ser importado:")
+        DATA = csv_importer(option)
+        create_news(DATA)
     elif answer == "2":
         print("Digite o nome do arquivo CSV a ser exportado:")
         option = input()
-        exporter.csv_exporter(option)
+        csv_exporter(option)
     elif answer == "3":
         print("Digite a quantidade de páginas a serem raspadas:")
         option = input()
-        scrapper.scrape(option)
-    
+        scrape(option)
+
 
 def collector_menu():
     """Seu código deve vir aqui"""
-    print("Selecione uma das opções a seguir:")
-    print(" 1 - Importar notícias a partir de um arquivo CSV;")
-    print(" 2 - Exportar notícias para CSV;")
-    print(" 3 - Raspar notícias online;")
-    print(" 4 - Sair.")
-    try:
-        answer = input()
-        assert answer in ["1", "2", "3", "4"]
-    except AssertionError:
-        print("Opção inválida\n")
-        raise AssertionError("Opção inválida")
-    else:
-        if answer == "4":
-            print("Encerrando script")
-        else:
-            execute_option(answer)
+    answer = input(
+        "Selecione uma das opções a seguir:\n"
+        " 1 - Importar notícias a partir de um arquivo CSV;\n"
+        " 2 - Exportar notícias para CSV;\n"
+        " 3 - Raspar notícias online;\n"
+        " 4 - Sair.\n"
+    )
+    result = "Opção inválida"
+    if answer not in ["1", "2", "3", "4"]:
+        print(result, file=sys.stderr)
+    if answer == "4":
+        print("Encerrando script")
+    execute_option(answer)
 
 
 def analyzer_menu():

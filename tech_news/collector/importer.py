@@ -26,7 +26,3 @@ def csv_importer(filepath, assembler=assemble_news):
         for values in content:
             data.append(assembler(header, values))
         return data
-
-
-if __name__ == "__main__":
-    print(csv_importer("/home/kylefelipe/trybe/sd-05-tech-news/correct.csv"))

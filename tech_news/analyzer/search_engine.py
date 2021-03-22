@@ -1,5 +1,5 @@
 import datetime
-from database import search_news
+from tech_news.database import search_news
 # from pymongo import MongoClient
 # from decouple import config
 

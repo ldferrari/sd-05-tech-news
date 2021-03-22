@@ -13,9 +13,8 @@ def fetch_content(url, timeout=3, delay=0.5):
         if response.status_code != 200:
             return ''
         # return Selector(text=response.text)
-        return response.text
-    finally:
         sleep(delay)
+        return response.text
 
 
 def scrape(fetcher, pages=1):

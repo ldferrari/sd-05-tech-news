@@ -1,6 +1,6 @@
 import csv
 # from pymongo import MongoClient
-from database import find_news
+from tech_news.database import find_news
 
 
 def csv_exporter(filepath):

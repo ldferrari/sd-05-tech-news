@@ -7,6 +7,7 @@ from tech_news.analyzer.search_engine import (
     search_by_title,
     search_by_date,
     search_by_source,
+    search_by_category,
 )
 
 
@@ -57,6 +58,9 @@ def analyzer_menu():
     elif INPUT == "3":
         SOURCE = input("Digite a fonte: ")
         search_by_source(SOURCE)
+    elif INPUT == "4":
+        SOURCE = input("Digite a categoria: ")
+        search_by_category(SOURCE)
     elif INPUT == "7":
         return print("Encerrando script")
     else:

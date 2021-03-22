@@ -9,6 +9,7 @@ from tech_news.analyzer.search_engine import (
     search_by_source,
     search_by_category,
 )
+from tech_news.analyzer.ratings import top_5_categories, top_5_news
 
 
 def collector_menu():
@@ -61,6 +62,10 @@ def analyzer_menu():
     elif INPUT == "4":
         SOURCE = input("Digite a categoria: ")
         search_by_category(SOURCE)
+    elif INPUT == "5":
+        top_5_news()
+    elif INPUT == "6":
+        top_5_categories()
     elif INPUT == "7":
         return print("Encerrando script")
     else:

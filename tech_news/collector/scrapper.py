@@ -1,3 +1,4 @@
+# Organizei/refatorei com ajuda do repo do Rodrigo
 import requests
 from parsel import Selector
 from time import sleep
@@ -8,7 +9,7 @@ URL = 'https://www.tecmundo.com.br/novidades'
 
 def fetch_content(url=URL, timeout=3, delay=0.5, page=1):
     try:
-        response = requests.get(f'{url}?page={page}', timeout=timeout)
+        response = requests.get(url, timeout=timeout)
         if (response.status_code != 200):
             return ''
         sleep(delay)
@@ -19,9 +20,10 @@ def fetch_content(url=URL, timeout=3, delay=0.5, page=1):
 
 
 def scrape(fetcher, pages=1):
+    url = "https://www.tecmundo.com.br/novidades"
     main_list = []
-    for x in range(1, pages+1):
-        resp = fetcher(page=x)
+    for page in range(pages):
+        resp = fetcher(url=url)
         selector = Selector(text=resp)
         h3 = 'h3[class=tec--card__title]'
         classe = 'a.tec--card__title__link::attr(href)'
@@ -30,57 +32,85 @@ def scrape(fetcher, pages=1):
         for x in trash_list:
             response = fetcher(url=x)
             selector2 = Selector(text=response)
-            title = "h1.tec--article__header__title::text"
-            timestamp = "div.tec--timestamp__item time::attr(datetime)"
-            writer_selector = "a.tec--author__info__link::text"
-            writer = selector2.css(writer_selector).getall()
-            if len(writer) > 0:
-                writer = writer[0].strip()
-            else:
-                writer = 'Sem autor'
-            shares_count = "div.tec--toolbar__item::text"
-            shares_count = selector2.css(shares_count).getall()
-            if len(shares_count) > 0:
-                shares_count = shares_count[1].strip()
-                if (len(shares_count) == 0):
-                    shares_count = 0
-                else:
-                    shares_count = shares_count[0]
-            else:
-                shares_count = 0
-            comments = "button.tec--btn::attr(data-count)"
-            comments = selector2.css(comments).getall()
-            if len(comments) > 0:
-                comments = comments[0]
-            else:
-                comments = 0
-            summary = "div.tec--article__body p"
-            summary = selector2.css(summary).getall()
-            summary = summary[0].strip()
-            """sources = "div.z--mb-16 div"
-            sources = selector2.css(sources).getall()
-            print(type(sources[0]))"""
-            dados = {
+            build_scrap = builder(selector2)
+            corrected_scrap = correction(
+                build_scrap["shares_count"],
+                build_scrap["comments_count"],
+                build_scrap["summary"],
+            )
+
+            new_result = {
                 "url": x,
-                "title": selector2.css(title)[0].extract().strip(),
-                "timestamp": selector2.css(timestamp)[0].extract(),
-                "writer": writer,
-                "shares_count": shares_count,
-                "comments_count": comments,
-                "summary": summary
+                "title": build_scrap["title"],
+                "timestamp": build_scrap["timestamp"],
+                "writer": build_scrap["writer"],
+                "shares_count": corrected_scrap["shares_count"],
+                "comments_count": corrected_scrap["comments_count"],
+                "summary": corrected_scrap["summary"],
+                "sources": build_scrap["sources"],
+                "categories": build_scrap["categories"],
             }
-            main_list.append(dados)
-            # print(x)
-            # print(len(main_list))
-        """n = 0
-        for x in lista:
-            print(lista[n])
-            print('\n')
-            n += 1
-            sleep(2)
-        """
+            main_list.append(new_result)
+            url += f"?page={page+2}"
     print(main_list)
     return main_list
+
+
+def correction(shares_count, comments_count, summary):
+    if shares_count and shares_count[0] != "":
+        shares_count = int("".join(shares_count))
+    else:
+        shares_count = 0
+    if comments_count and comments_count != "None":
+        comments_count = int(comments_count)
+    else:
+        comments_count = 0
+    if summary != "":
+        summary = "".join(summary)
+
+    return {
+        "shares_count": shares_count,
+        "comments_count": comments_count,
+        "summary": summary,
+    }
+
+
+def builder(selector_new):
+    title = selector_new.css("h1.tec--article__header__title::text").get()
+
+    timestamp = selector_new.css(
+        ".tec--timestamp__item time::attr(datetime)"
+    ).get()
+
+    writer = selector_new.css(
+        "div.tec--author__info a.tec--author__info__link::text"
+    ).get()
+
+    shares_count = selector_new.css("div.tec--toolbar__item::text").re(r"\d")
+
+    comments_count = selector_new.css(
+        "div.tec--toolbar__item button.tec--btn::attr(data-count)"
+    ).get()
+
+    summary = selector_new.css(
+        "div.tec--article__body p:first-child *::text"
+    ).getall()
+
+    sources = selector_new.css(
+        ".z--mb-16 > div > a::text"
+    ).getall()
+    categories = selector_new.css("#js-categories > a::text").getall()
+
+    return {
+        "title": title,
+        "timestamp": timestamp,
+        "writer": writer,
+        "shares_count": shares_count,
+        "comments_count": comments_count,
+        "summary": summary,
+        "sources": sources,
+        "categories": categories,
+    }
 
 
 scrape(fetcher=fetch_content, pages=1)

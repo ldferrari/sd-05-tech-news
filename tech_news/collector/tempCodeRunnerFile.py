@@ -1,4 +1,7 @@
-URL_BASE = "https://www.tecmundo.com.br/mobilidade-urbana-smart-cities/155000-musk-tesla-carros-totalmente-autonomos.htm"
-
-
-print(scrape(fetcher=fetch_content(URL_BASE), pages=2))
+               # "timestamp": timestamp,
+                    # "writer": author,
+                    # "shares_count": shares_count,
+                    # "comments_count": comments_count,
+                    # "summary": summary,
+                    # "sources": [sources],
+                    # "categories": categories,

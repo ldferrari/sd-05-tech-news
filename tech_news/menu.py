@@ -2,7 +2,7 @@ import sys
 from tech_news.collector.importer import csv_importer
 from tech_news.collector.exporter import csv_exporter
 from tech_news.collector.scrapper import scrape, fetch_content
-from tech_news.analyzer.ratings import top_5_news, top_5_categories
+# from tech_news.analyzer.ratings import top_5_news, top_5_categories
 
 from tech_news.database import create_news
 
@@ -11,16 +11,15 @@ def execute_option(answer):
     option = ""
     if answer == "1":
         option = input("Digite o nome do arquivo CSV a ser importado:")
-        DATA = csv_importer(option)
-        create_news(DATA)
+        data = csv_importer(option)
+        create_news(data)
     elif answer == "2":
         print("Digite o nome do arquivo CSV a ser exportado:")
         option = input()
         csv_exporter(option)
     elif answer == "3":
-        print("Digite a quantidade de páginas a serem raspadas:")
-        option = input()
-        scrape(option)
+        option = input("Digite a quantidade de páginas a serem raspadas:")
+        data = scrape(fetcher=fetch_content, pages=option)
 
 
 def collector_menu():

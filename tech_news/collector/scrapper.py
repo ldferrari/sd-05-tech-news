@@ -1,6 +1,6 @@
 import requests
 # from parsel import Selector
-import time
+from time import sleep
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -8,12 +8,14 @@ def fetch_content(url, timeout=3, delay=0.5):
         response = requests.get(url, timeout=timeout)
     except requests.ReadTimeout:
         # ?response.status_code == '200':
-        return ""
+        return ''
     else:
+        if response.status_code != 200:
+            return ''
         # return Selector(text=response.text)
         return response.text
     finally:
-        time.sleep(delay)
+        sleep(delay)
 
 
 def scrape(fetcher, pages=1):

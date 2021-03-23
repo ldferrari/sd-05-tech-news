@@ -32,18 +32,36 @@ def search_by_date(date):
             return []
         return [(NEWS[0]["title"], NEWS[0]["url"])]
 
-# https://docs.python.org/3/library/datetime.html
+# Sobre estrutura code, aqui podia ser apenas try except, com else dentro try
+# datetime, strptime, formatos https://docs.python.org/3/library/datetime.html
 
 
 def search_by_source(source):
     """Seu código deve vir aqui"""
+    # Same as search_by_title, but by source
+    NEWS = database.search_news(
+        {"sources": {"$regex": source, "$options": "i"}}
+    )
+    if len(NEWS) == 0:
+        return []
+    return [(NEWS[0]["title"], NEWS[0]["url"])]
 
 
 def search_by_category(category):
     """Seu código deve vir aqui"""
-
+    # Same but by category
+    NEWS = database.search_news(
+        {"categories": {"$regex": category, "$options": "i"}}
+    )
+    if len(NEWS) == 0:
+        return []
+    return [(NEWS[0]["title"], NEWS[0]["url"])]
 
 # https://kb.objectrocket.com/mongo-db/how-to-query-mongodb-documents-with-regex-in-python-362
 # Honestidade acadêmica:
 # PR do aluno Felipe Vieira para lembrar da norma de var maiuscula (NEWS)
 # https://github.com/tryber/sd-05-tech-news/pull/17/files
+# PR do aluno Dandrea para se inspirar com outros jeitos, por ex. usando tuple
+# https://github.com/tryber/sd-05-tech-news/pull/2/files
+# PR do aluno Cesar para completar entendimento de lógicas e exemplos diversos
+# https://github.com/tryber/sd-05-tech-news/pull/18/files

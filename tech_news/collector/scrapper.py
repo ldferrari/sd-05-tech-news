@@ -15,7 +15,12 @@ Classes = {
 
 
 def fetch_content(url, timeout=3, delay=0.5):
-    """Seu código deve vir aqui"""
+    """
+    Seu código deve vir aqui.
+    url: url a ser acessada
+    timeout: tempo de espera da requisição
+    delay: tempo de espera antes de efetuar uma requisição
+    """
     try:
         response = requests.get(url, timeout=timeout)
     except requests.RequestException:
@@ -29,7 +34,11 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 
 def scrape(fetcher, pages=1):
-    """Seu código deve vir aqui"""
+    """
+    Seu código deve vir aqui.
+    fetcher: Função para buscar os dados.
+    pages: quantidade de patinas a serem raspadas.
+    """
     url = "https://www.tecmundo.com.br/novidadess"
     news_links = []
     all_news = []
@@ -69,8 +78,3 @@ def parse_news(news):
         "sources": sources,
         "categories": categories,
     }
-
-
-if __name__ == "__main__":
-    result = scrape(fetcher=fetch_content)
-    print(result)

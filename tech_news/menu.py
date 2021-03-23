@@ -69,7 +69,7 @@ execute_analyze = {
     "4": lambda x: search_by_category(x),
     "5": lambda _: top_5_news(),
     "6": lambda _: top_5_categories(),
-    "7": lambda _: print(RESULT["exit"]),
+    "7": lambda _: print("Encerrando script\n"),
 }
 
 
@@ -89,7 +89,5 @@ def analyzer_menu():
     if answer in execute_analyze.keys():
         resp = input(analyze_messages.get(answer))
         issue = execute_analyze.get(answer)(resp)
-    # if answer == "7":
-    #     issue = RESULT["exit"]
     else:
-        print(issue, file=sys.stderr)
+        print("Opção inválida", file=sys.stderr)

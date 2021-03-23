@@ -18,7 +18,9 @@ def container(url_page, res_article):
     title = sel_article.css("#js-article-title::text").get()
     timestamp = sel_article.css("#js-article-date::attr(datetime)").get()
     writer = sel_article.css(".tec--author__info__link::text").get()
-    shares_count = sel_article.css("div.tec--toolbar__item:nth-child(1)::text").get().strip()
+    shares_count = sel_article.css(
+        "div.tec--toolbar__item:nth-child(1)::text"
+    ).get().strip()
     shares_count = int(shares_count.split()[0])
     summary = sel_article.css(
             ".tec--article__body > p:nth-child(1)::text"

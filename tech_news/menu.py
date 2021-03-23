@@ -63,18 +63,13 @@ def collector_menu():
 
 
 execute_analyze = {
-    "1": lambda: wrapper(analyze_messages["1"], func=search_by_title),
-    "2": lambda: wrapper(analyze_messages["2"], func=search_by_date),
-    "3": lambda: wrapper(analyze_messages["3"], func=search_by_source),
-    "4": lambda: wrapper(analyze_messages["4"], func=search_by_category),
-    "5": lambda: top_5_news(),
-    "6": lambda: top_5_categories(),
+    "1": lambda x: search_by_title(x),
+    "2": lambda x: search_by_date(x),
+    "3": lambda x: search_by_source(x),
+    "4": lambda x: search_by_category(x),
+    "5": lambda _: top_5_news(),
+    "6": lambda _: top_5_categories(),
 }
-
-
-def wrapper(*pergunta, func):
-    print("wrapper")
-    return func(*[input(perg) for perg in pergunta])
 
 
 def analyzer_menu():
@@ -89,16 +84,12 @@ def analyzer_menu():
         + " 6 - Listar top 5 categorias;\n"
         + " 7 - Sair."
     )
-    print("\n>>>>>> ", answer, type(answer))
-    print(answer in execute_analyze.keys())
     issue = RESULT['error']
     if answer in execute_analyze.keys():
-        print(">>>>>: ", execute_analyze[answer])
-        issue = execute_analyze[answer]
-    if answer == "5":
-        top_5_news()
-    if answer == "6":
-        top_5_categories()
+        resp = input(analyze_messages.get(answer))
+        issue = execute_analyze.get(answer)(resp)
     if answer == "7":
         issue = RESULT["exit"]
-    print(issue, file=sys.stderr)
+    else:
+        print(issue, file=sys.stderr)
+    print(issue)

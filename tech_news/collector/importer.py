@@ -1,2 +1,11 @@
+import csv
+
+
 def csv_importer(filepath):
-    """Seu código deve vir aqui"""
+    if filepath.split('.')[1] == 'csv':
+        with open(filepath, 'r') as news:
+            ler = csv.reader(news, delimiter=';')
+            print(ler)
+
+
+csv_importer('file_csv.csv')

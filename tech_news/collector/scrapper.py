@@ -51,7 +51,8 @@ def scrape(fetcher, pages=1):
                 ).re_first(r"[0-9]+")
             print(f"shares count is :{shares_count_str}")
             shares_count = int(shares_count_str)
-            # none problem because not always present
+            # ao testar, problema "none" porque tag nem sempre presente
+            # (aqui escolha de css de contagens é dura porque varia entre news)
             comments_count_str = selector_new.css(
                 "#js-comments-btn::text").re_first(r"[0-9]+")
             print(f"comments count is :{comments_count_str}")

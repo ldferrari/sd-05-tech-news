@@ -41,5 +41,5 @@ def csv_importer(filepath):
         # (escrevendo cada etapa, dava erro de csv_importer too difficult)
         return result
 
-# Testar com csv_importer("tech_news/correct.csv")
+# Testado com csv_importer("./correct.csv")
 # https://docs.python.org/3/library/exceptions.html erros nativos

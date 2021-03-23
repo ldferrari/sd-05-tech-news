@@ -33,8 +33,12 @@ def csv_importer(filepath):
         raise ValueError(f"Arquivo {filepath} não encontrado")
     # 3. No else (executado se tudo correr bem no try), retornar resultado
     else:
-        result = []
-        # ainda sem certeza de como fazer corresponder header e data
+        result = [
+            {header[i]: content[i] for i in range(len(content))}
+            for content in data
+        ]
+        # fazer corresponder elemento 1 de header com elemento 1 de corpo etc
+        # (escrevendo cada etapa, dava erro de csv_importer too difficult)
         return result
 
 # Testar com csv_importer("tech_news/correct.csv")

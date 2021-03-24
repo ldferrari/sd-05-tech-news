@@ -14,7 +14,6 @@ def csv_exporter(filepath):
         raise ValueError("Formato invalido")
     else:
         with open(filepath, "w") as file:
-            writer = csv.writer(file, delimiter=";")
             headers = [
                 "url",
                 "title",
@@ -26,6 +25,15 @@ def csv_exporter(filepath):
                 "sources",
                 "categories",
             ]
-            writer.writerow(headers)
+            writer = csv.DictWriter(file, delimiter=";", fieldnames=headers)
+            writer.writeheader()
             news = find_news()
-            writer.writerow(news)
+            for rows in news:
+                for key in rows:
+                    if isinstance(rows[key], list):
+                        rows[key] = ",".join(rows[key])
+            writer.writerows(news)
+
+# transparencia academica: conversei com colegas que sugeriram os artigos:
+# https://stackoverflow.com/questions/2982023/how-to-write-header-row-with-csv-dictwriter
+# # https://www.w3schools.com/python/ref_func_isinstance.asp

@@ -32,13 +32,39 @@ def search_by_date(date):
         news = []
         c = 0
         while c < len(data):
-            news.append((news[c]['title'], news[c]['url']))
+            news.append((data[c]['title'], data[c]['url']))
+            c += 1
+
         return news
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    data = database.search_news(
+        {'sources': {'$regex': source, '$options': 'i'}}
+    )
+
+    if len(data) == 0:
+        return data
+
+    news = []
+    c = 0
+    while c < len(data):
+        news.append((data[c]['title'], data[c]['url']))
+        c += 1
+
+    return news
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    data = {"categories": {"$regex": category, "$options": "i"}}
+
+    if len(data) == 0:
+        return data
+
+    news = []
+    c = 0
+    while c < len(data):
+        news.append((data[c]['title'], data[c]['url']))
+        c += 1
+
+    return news

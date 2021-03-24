@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from tech_news.database import search_news
 # from pymongo import MongoClient
 # from decouple import config
@@ -23,11 +23,11 @@ def search_by_title(title):
 def search_by_date(date):
     try:
         format = "%Y-%m-d"
-        datetime.datetime.strptime(date, format)
-    except AssertionError:
+        datetime.strptime(date, format)
+        news = search_news({"timestamp": {"$regex": date}})
+    except ValueError:
         raise ValueError("Data inválida")
     else:
-        news = search_news(date)
         resultado = []
         for noticia in news:
             resultado.append((noticia['title'], noticia['url']))
@@ -35,9 +35,8 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    insensitive_source = {"source": {"$regex": source, "$options": "i"}}
-    # news = list(db.news.find(insensitiveTitle))
-    news = search_news(insensitive_source)
+    insensitive_sources = {"sources": {"$regex": source, "$options": "i"}}
+    news = search_news(insensitive_sources)
     resultado = []
     for noticia in news:
         resultado.append((noticia['title'], noticia['url']))
@@ -45,9 +44,9 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    insensitive_category = {"category": {"$regex": category, "$options": "i"}}
+    insensitive_categories = {"categories": {"$regex": category, "$options": "i"}}
     # news = list(db.news.find(insensitiveTitle))
-    news = search_news(insensitive_category)
+    news = search_news(insensitive_categories)
     resultado = []
     for noticia in news:
         resultado.append((noticia['title'], noticia['url']))

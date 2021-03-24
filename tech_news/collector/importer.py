@@ -7,19 +7,33 @@ def csv_importer(filepath):
         with open(filepath) as file:
             arquivo = csv.reader(file, delimiter=';', quotechar='"')
             header, *data = arquivo
-    except FileNotFoundError:
-        raise ValueError(f'Arquivo {filepath} não encontrado')
+            # print(data)
+            correct_header = [
+                "url",
+                "title",
+                "timestamp",
+                "writer",
+                "shares_count",
+                "comments_count",
+                "summary",
+                "sources",
+                "categories",
+            ]
+            assert header == correct_header
     except AssertionError:
         raise ValueError("Formato invalido")
+    except FileNotFoundError:
+        raise ValueError(f'Arquivo {filepath} não encontrado')
     except OSError:
         raise ValueError("Formato invalido")
     else:
-        dicionario = {}
-        # acc = 0
-        # for item in header:
-        #    dicionario[item] = data[item]
-        #    acc += 1
-        # if header != 'url;title;timestamp;writer;shares_count;comments_count;
-        # summary;sources;categories':
-        #    raise Exception("Cabeçalho errado")
-        return dicionario
+        result = [
+            {header[i]: content[i] for i in range(len(content))}
+            for content in data
+        ]
+        return result
+
+# transparencia academica ->  para fugir de "'csv_importer' is too complex"
+# pois estava fazendo "baby steps" para o retorno
+# olhei PRs da colega Juliete, Kyle e Luis Medeiros para uma solução mais
+# elegante que fugisse do erro

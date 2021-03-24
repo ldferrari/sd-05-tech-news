@@ -44,9 +44,9 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    insensitive_categories = {"categories": {"$regex": category, "$options": "i"}}
+    insens_categories = {"categories": {"$regex": category, "$options": "i"}}
     # news = list(db.news.find(insensitiveTitle))
-    news = search_news(insensitive_categories)
+    news = search_news(insens_categories)
     resultado = []
     for noticia in news:
         resultado.append((noticia['title'], noticia['url']))

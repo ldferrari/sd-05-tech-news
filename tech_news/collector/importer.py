@@ -1,5 +1,6 @@
 import csv
 
+
 def csv_importer(filepath):
     if filepath.split('.')[1] != "csv":
         raise ValueError("Formato invalido")

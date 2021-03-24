@@ -28,7 +28,7 @@ def csv_importer(filepath):
         raise ValueError("Formato invalido")
     else:
         result = [
-            {header[i]: content[i] for i in range(len(content))}
+            {header[indice]: content[indice] for indice in range(len(content))}
             for content in data
         ]
         return result

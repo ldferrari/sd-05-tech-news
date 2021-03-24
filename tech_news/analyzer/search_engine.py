@@ -56,15 +56,6 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    data = {"categories": {"$regex": category, "$options": "i"}}
+    print(category)
+    return []
 
-    if len(data) == 0:
-        return data
-
-    news = []
-    c = 0
-    while c < len(data):
-        news.append((data[c]['title'], data[c]['url']))
-        c += 1
-
-    return news

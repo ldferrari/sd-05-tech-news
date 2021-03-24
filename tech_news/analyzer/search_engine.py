@@ -58,4 +58,3 @@ def search_by_source(source):
 def search_by_category(category):
     print(category)
     return []
-

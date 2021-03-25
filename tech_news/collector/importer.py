@@ -8,8 +8,7 @@ def csv_importer(filepath):
     try:
         with open(filepath) as file:
             reader = csv.DictReader(file, delimiter=";")
-            for text in reader:
-                body = text
-            return [body]
+            body = [content for content in reader]
+            return body
     except FileNotFoundError:
         raise ValueError(f"Arquivo {filepath} não encontrado")

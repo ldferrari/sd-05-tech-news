@@ -20,7 +20,9 @@ def fetch_content(url, timeout=3, delay=0.5):
 def scrape(fetcher, pages=1):
     """Seu código deve vir aqui"""
     result = []
-    for page in range(pages):
+    page = 1
+
+    while page <= pages:
         base_url = "https://www.tecmundo.com.br/novidades"
         page_url = f"?page={page}"
         the_url = base_url + page_url
@@ -32,4 +34,23 @@ def scrape(fetcher, pages=1):
                 ).get()
             timestamp = new_selector.css(
                 "#js-article-date ::attr(datetime)"
-            ).get()
+                ).get()
+            author = new_selector.css(
+                ".tec--author__info__link ::text"
+                ).get()
+
+            result.append(
+                {
+                    "url": url,
+                    "title": title,
+                    "timestamp": timestamp,
+                    "writer": author,
+                    # "shares_count": shares_count,
+                    # "comments_count": comments_count,
+                    # "summary": summary,
+                    # "sources": sources,
+                    # "categories": categories,
+                }
+            )
+        page += 1
+    return result

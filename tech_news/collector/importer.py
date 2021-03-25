@@ -1,11 +1,15 @@
 import csv
 
+
 def csv_importer(filepath):
+    """Seu código deve vir aqui"""
     collection = []
     try:
         assert filepath.split('.')[1] == 'csv'
         with open(filepath) as file:
-            beach_status_reader = csv.reader(file, delimiter=";", quotechar='"')
+            beach_status_reader = csv.reader(
+                file, delimiter=";", quotechar='"'
+                )
             header, *data = beach_status_reader
     except AssertionError:
         raise ValueError('Formato invalido')
@@ -22,7 +26,7 @@ def csv_importer(filepath):
                 "comments_count": each_row[5],
                 "summary": each_row[6],
                 "sources": each_row[7],
-                "categories":each_row[8]
+                "categories": each_row[8]
             }
             collection.append(assembly)
     return collection

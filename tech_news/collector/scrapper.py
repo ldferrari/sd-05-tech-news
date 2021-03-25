@@ -38,6 +38,13 @@ def scrape(fetcher, pages=1):
             author = new_selector.css(
                 ".tec--author__info__link ::text"
                 ).get()
+            summary = new_selector.css(
+                ".tec--article__body > p::text"
+                ).getall()[0]  # .strip()
+            categories = new_selector.css("#js-categories a::text").getall()
+            sources = new_selector.css(".z--mb-16 .tec--badge::text").getall()
+            shares_count = 0  # fck
+            comments_count = 0  # fck2
 
             result.append(
                 {
@@ -45,11 +52,11 @@ def scrape(fetcher, pages=1):
                     "title": title,
                     "timestamp": timestamp,
                     "writer": author,
-                    # "shares_count": shares_count,
-                    # "comments_count": comments_count,
-                    # "summary": summary,
-                    # "sources": sources,
-                    # "categories": categories,
+                    "shares_count": shares_count,
+                    "comments_count": comments_count,
+                    "summary": summary,
+                    "sources": sources,
+                    "categories": categories,
                 }
             )
         page += 1

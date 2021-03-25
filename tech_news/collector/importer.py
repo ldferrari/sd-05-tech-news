@@ -2,7 +2,7 @@ import csv
 
 
 def csv_importer(filepath):
-    results = []    
+    results = []
     if filepath.split('.')[1] != "csv":
         raise ValueError("Formato invalido")
     try:

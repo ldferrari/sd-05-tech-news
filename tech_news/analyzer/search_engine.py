@@ -1,5 +1,14 @@
+from tech_news.database import search_news
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    titulo = {"title": title.title()}
+    print(titulo)
+    search = search_news(titulo)
+    if search == []:
+        return []
+    news = [(search[0]["title"], search[0]["url"])]
+    return news
 
 
 def search_by_date(date):

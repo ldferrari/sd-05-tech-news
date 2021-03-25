@@ -43,8 +43,8 @@ def scrape(fetcher, pages=1):
                 ).getall()[0]  # .strip()
             categories = new_selector.css("#js-categories a::text").getall()
             sources = new_selector.css(".z--mb-16 .tec--badge::text").getall()
-            shares_count = 0  # fck
-            comments_count = 0  # fck2
+            shares_count = 0  # ?
+            comments_count = 0  # ?
 
             result.append(
                 {

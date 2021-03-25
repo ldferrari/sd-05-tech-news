@@ -28,7 +28,7 @@ def scrape(fetcher, pages=1):
         the_url = base_url + page_url
         selector = Selector(text=fetcher(the_url))
         for url in selector.css(".tec--list__item h3 a::attr(href)").getall():
-            new_selector = parsel.Selector(text=fetcher(url))
+            new_selector = Selector(text=fetcher(url))
             title = new_selector.css(
                 ".tec--article__header__title::text"
                 ).get()
@@ -61,3 +61,11 @@ def scrape(fetcher, pages=1):
             )
         page += 1
     return result
+
+#  shares_count = int(detail_selector.css(
+#                ".tec--toolbar__item::text"
+#                ).re_first(r"\d") or "0")
+
+#            comments_count = int(detail_selector.css(
+#                "#js-comments-btn::text"
+#                ).re_first(r"\d") or "0")

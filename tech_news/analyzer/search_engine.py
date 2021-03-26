@@ -1,3 +1,4 @@
+import datetime
 from ..database import search_news
 
 
@@ -11,7 +12,11 @@ def search_by_title(title):
 
 
 def search_by_date(date):
-    """Seu código deve vir aqui"""
+    try:
+        datetime.datetime.strptime(date, "%Y-%m-%d")
+        return search_by_key("timestamp", {"regex": date})
+    except ValueError:
+        raise ValueError("Data inválida")
 
 
 def search_by_source(source):

@@ -1,9 +1,9 @@
-import datetime
+from datetime import datetime
 from ..database import search_news
 
 
 def search_by_key(key, query):
-    result = search_news({key: query})
+    result = search_news({key: {"$regex": query, "$options": "i"}})
     return [(news["title"], news["url"]) for news in result]
 
 
@@ -13,8 +13,8 @@ def search_by_title(title):
 
 def search_by_date(date):
     try:
-        datetime.datetime.strptime(date, "%Y-%m-%d")
-        return search_by_key("timestamp", {"regex": date})
+        datetime.strptime(date, "%Y-%m-%d")
+        return search_by_key("timestamp", date)
     except ValueError:
         raise ValueError("Data inválida")
 

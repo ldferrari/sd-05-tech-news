@@ -1,5 +1,13 @@
+from ..database import search_news
+
+
+def search_by_key(key, query):
+    result = search_news({key: query})
+    return [(news["title"], news["url"]) for news in result]
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    return search_by_key("title", title)
 
 
 def search_by_date(date):

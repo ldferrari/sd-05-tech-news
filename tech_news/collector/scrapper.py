@@ -7,18 +7,15 @@ def fetch_content(url, timeout=3, delay=0.5):
     try:
         response = requests.get(url, timeout=timeout)
     except requests.ReadTimeout:
-        # ?response.status_code == '200':
         return ''
     else:
         if response.status_code != 200:
             return ''
-        # return Selector(text=response.text)
         sleep(delay)
         return response.text
 
 
 def scrape(fetcher, pages=1):
-    """Seu código deve vir aqui"""
     result = []
     page = 1
 
@@ -39,12 +36,16 @@ def scrape(fetcher, pages=1):
                 ".tec--author__info__link ::text"
                 ).get()
             summary = new_selector.css(
-                ".tec--article__body > p::text"
-                ).getall()[0]  # .strip()
+                ".tec--article__body > *::text"
+                ).get()   # out of range? trocar p por * e getall por get
             categories = new_selector.css("#js-categories a::text").getall()
             sources = new_selector.css(".z--mb-16 .tec--badge::text").getall()
-            shares_count = 0  # ?
-            comments_count = 0  # ?
+            shares_count = new_selector.css(
+                ".tec--toolbar__item ::text"
+                ).re_first(r"\d") or "0"
+            comments_count = new_selector.css(
+                ".js-comments-btn ::attr(data-count)"
+                ).re_first(r"\d") or "0"
 
             result.append(
                 {
@@ -52,8 +53,8 @@ def scrape(fetcher, pages=1):
                     "title": title,
                     "timestamp": timestamp,
                     "writer": author,
-                    "shares_count": shares_count,
-                    "comments_count": comments_count,
+                    "shares_count": int(shares_count),
+                    "comments_count": int(comments_count),
                     "summary": summary,
                     "sources": sources,
                     "categories": categories,
@@ -61,11 +62,3 @@ def scrape(fetcher, pages=1):
             )
         page += 1
     return result
-
-#  shares_count = int(detail_selector.css(
-#                ".tec--toolbar__item::text"
-#                ).re_first(r"\d") or "0")
-
-#            comments_count = int(detail_selector.css(
-#                "#js-comments-btn::text"
-#                ).re_first(r"\d") or "0")

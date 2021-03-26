@@ -20,7 +20,7 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    return search_by_key("sources", source)
 
 
 def search_by_category(category):

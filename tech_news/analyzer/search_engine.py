@@ -24,4 +24,4 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    return search_by_key("categories", category)

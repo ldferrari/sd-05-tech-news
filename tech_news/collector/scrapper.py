@@ -7,7 +7,7 @@ search = {
     'url_list': 'h3 a.tec--card__title__link::attr(href)',
     'title': '#js-article-title::text',
     'timestamp': 'time::attr(datetime)',
-    'writer': 'a.tec--author__info__link::text',
+    'writer': '.tec--author__info__link::text',
     'shares': 'div.tec--toolbar__item::text',
     'comments': 'button#js-comments-btn::attr(data-count)',
     'summary': '.tec--article__body > p:nth-child(1)::text',
@@ -32,7 +32,7 @@ def parsed_news(notice, url):
     url = url
     title = text.css(search['title']).get()
     timestamp = text.css(search['timestamp']).get()
-    writer = text.css(search['writer']).get().stip()
+    writer = text.css(search['writer']).get()
     shares_count = text.css(search['shares']).get().strip()[:1]
     comments_count = text.css(search['comments']).get()
     summary = text.css(search['summary']).get()

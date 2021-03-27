@@ -11,7 +11,7 @@ search = {
     'shares': 'div.tec--toolbar__item:nth-child(1)::text',
     'comments': 'button#js-comments-btn::attr(data-count)',
     'summary': '.tec--article__body > p:nth-child(1)::text',
-    'sources': 'a.tec--badge::text'
+    'sources': '.z--mb-16 > div > a::text'
 }
 
 
@@ -37,8 +37,7 @@ def parsed_news(notice, url):
     comments_count = text.css(search['comments']).get()
     summary = text.css(search['summary']).get().strip()
     sources = text.css(search['sources']).getall()
-    for source in sources:
-        sources[sources.index(source)] = source.strip()
+    sources = [src for src in sources]
     categories = text.css('a.tec--badge--primary::text').getall()
     return {
         'url': url,

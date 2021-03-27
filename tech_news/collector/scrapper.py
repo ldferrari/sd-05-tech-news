@@ -64,4 +64,3 @@ def scrape(fetcher, pages=1):
         for url in urls:
             news.append(parsed_news(fetcher(url), url=url))
         return news
-        

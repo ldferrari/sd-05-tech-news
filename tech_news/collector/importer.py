@@ -32,8 +32,3 @@ def csv_importer(filepath):
             for content in data
         ]
         return result
-
-# transparencia academica ->  para fugir de "'csv_importer' is too complex"
-# pois estava fazendo "baby steps" para o retorno
-# olhei PRs da colega Juliete, Kyle e Luis Medeiros para uma solução mais
-# elegante que fugisse do erro

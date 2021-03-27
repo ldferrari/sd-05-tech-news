@@ -8,11 +8,10 @@ search = {
     'title': '#js-article-title::text',
     'timestamp': 'time::attr(datetime)',
     'writer': '.tec--author__info__link::text',
-    'shares': 'div.tec--toolbar__item::text',
+    'shares': 'div.tec--toolbar__item:nth-child(1)::text',
     'comments': 'button#js-comments-btn::attr(data-count)',
     'summary': '.tec--article__body > p:nth-child(1)::text',
-    'sources': 'a.tec--badge::text',
-    'categories': '"a.tec--badge--primary::text'
+    'sources': 'a.tec--badge::text'
 }
 
 
@@ -34,19 +33,22 @@ def parsed_news(notice, url):
     title = text.css(search['title']).get()
     timestamp = text.css(search['timestamp']).get()
     writer = text.css(search['writer']).get()
-    shares_count = text.css(search['shares']).get().strip()[:1]
+    shares_count = text.css(search['shares']).get().strip()
     comments_count = text.css(search['comments']).get()
     summary = text.css(search['summary']).get().strip()
     sources = text.css(search['sources']).getall()
     for source in sources:
         sources[sources.index(source)] = source.strip()
-    categories = text.css(search['categories']).getall()
+    categories = text.css('div#js-categories a::text').getall()
+    for categ in categories:
+        categories[categories.index(categ)] = categ.strip()
+    print(categories)
     return {
         'url': url,
         'title': title,
         'timestamp': timestamp,
         'writer': writer,
-        'shares_count': int(shares_count),
+        'shares_count': int(shares_count.split()[0]),
         'comments_count': int(comments_count),
         'summary': summary,
         'sources': sources,

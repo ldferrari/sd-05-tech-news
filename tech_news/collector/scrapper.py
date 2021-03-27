@@ -40,9 +40,6 @@ def parsed_news(notice, url):
     for source in sources:
         sources[sources.index(source)] = source.strip()
     categories = text.css('a.tec--badge--primary::text').getall()
-    for categ in categories:
-        categories[categories.index(categ)] = categ.strip()
-    print(categories)
     return {
         'url': url,
         'title': title,

@@ -32,8 +32,8 @@ def parsed_news(notice, url):
     url = url
     title = text.css(search['title']).get()
     timestamp = text.css(search['timestamp']).get()
-    writer = text.css(search['writer']).get()
-    shares_count = text.css(search['shares']).get()
+    writer = text.css(search['writer']).get().stip()
+    shares_count = text.css(search['shares']).get().strip()[:1]
     comments_count = text.css(search['comments']).get()
     summary = text.css(search['summary']).get()
     sources = text.css(search['sources']).getall()

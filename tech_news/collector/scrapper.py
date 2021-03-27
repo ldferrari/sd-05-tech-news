@@ -58,7 +58,7 @@ def scrape(fetcher, pages=1):
     urls = []
     for page in range(pages):
         news_list = Selector(text=fetcher(main_page))
-        urls.append(news_list.css(search['url_list']).getall())
+        urls.extend(news_list.css(search['url_list']).getall())
         main_page += f'?page={page + 2}'
         for url in urls:
             news.append(parsed_news(fetcher(url), url=url))

@@ -35,7 +35,7 @@ def parsed_news(notice, url):
     writer = text.css(search['writer']).get()
     shares_count = text.css(search['shares']).get().strip()[:1]
     comments_count = text.css(search['comments']).get()
-    summary = text.css(search['summary']).get()
+    summary = text.css(search['summary']).get().strip()
     sources = text.css(search['sources']).getall()
     for source in sources:
         sources[sources.index(source)] = source.strip()
@@ -47,8 +47,8 @@ def parsed_news(notice, url):
         'title': title,
         'timestamp': timestamp,
         'writer': writer,
-        'shares_count': shares_count,
-        'comments_count': comments_count,
+        'shares_count': int(shares_count),
+        'comments_count': int(comments_count),
         'summary': summary,
         'sources': sources,
         'categories': categories,

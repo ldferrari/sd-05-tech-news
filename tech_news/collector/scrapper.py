@@ -39,7 +39,7 @@ def parsed_news(notice, url):
     sources = text.css(search['sources']).getall()
     for source in sources:
         sources[sources.index(source)] = source.strip()
-    categories = text.css('div#js-categories a::text').getall()
+    categories = text.css('a.tec--badge--primary::text').getall()
     for categ in categories:
         categories[categories.index(categ)] = categ.strip()
     print(categories)

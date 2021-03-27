@@ -3,7 +3,16 @@ from time import sleep
 from parsel import Selector
 
 
-search = ['div.tec--toolbar__item::text', 'button#js-comments-btn::text']
+search = {
+    'url_list': 'h3 a.tec--card__title__link::attr(href)',
+    'title': '#js-article-title::text',
+    'timestamp': 'time::attr(datetime)',
+    'writer': 'a.tec--author__info__link::text',
+    'shares': 'div.tec--toolbar__item::text',
+    'comments': 'button#js-comments-btn::attr(data-count)',
+    'summary': '.tec--article__body > p:nth-child(1)::text',
+    'sources': 'a.tec--badge::text'
+}
 
 
 def fetch_content(url, timeout=3, delay=0.5):
@@ -18,24 +27,22 @@ def fetch_content(url, timeout=3, delay=0.5):
         return response.text
 
 
-def scrape(fetcher, pages=1):
-    page = Selector(text=fetcher)
-    url = page.css('head link::attr(href)')[20].get()
-    title = page.css('h1.tec--article__header__title::text').get().strip()
-    timestamp = page.css('time::attr(datetime)').get()
-    writer = page.css('a.tec--author__info__link::text').get().strip()
-    shares_count = page.css(search[0])[1].get()
-    shares_count.replace('Compartilharam', '').strip()
-    comments_count = page.css(search[1])[1].get()
-    comments_count.replace('Comentários', '').strip()
-    summary = page.css('div.tec--article__body p').get()
-    sources = page.css('div.z--mb-16.z--px-16 a.tec--badge::text').getall()
+def parsed_news(notice, url):
+    text = Selector(notice)
+    url = url
+    title = text.css(search['title']).get()
+    timestamp = text.css(search['timestamp']).get()
+    writer = text.css(search['writer']).get()
+    shares_count = text.css(search['shares']).get()
+    comments_count = text.css(search['comments']).get()
+    summary = text.css(search['summary']).get()
+    sources = text.css(search['sources']).getall()
     for source in sources:
         sources[sources.index(source)] = source.strip()
-    categories = page.css('div#js-categories a::text').getall()
+    categories = text.css('div#js-categories a::text').getall()
     for categ in categories:
         categories[categories.index(categ)] = categ.strip()
-    return [{
+    return {
         'url': url,
         'title': title,
         'timestamp': timestamp,
@@ -45,4 +52,16 @@ def scrape(fetcher, pages=1):
         'summary': summary,
         'sources': sources,
         'categories': categories,
-        }]
+    }
+
+
+def scrape(fetcher, pages=1):
+    main_page = "https://www.tecmundo.com.br/novidades"
+    news = []
+    for page in range(pages):
+        news_list = Selector(text=fetcher(main_page))
+        urls = news_list.css(search['url_list']).getall()
+        for url in urls:
+            news.append(parsed_news(fetcher(url), url=url))
+        return news
+        

@@ -1,13 +1,14 @@
-from csv import writer
+import csv
 from tech_news import database
 
 
 def csv_exporter(filepath):
     if (not filepath.lower().endswith(".csv")):
-        raise Exception("Este arquivo não é formato csv")
+        raise ValueError("Formato invalido")
+
     news = database.find_news()
     with open(filepath, "w") as file:
-        file_writer = writer(file, delimiter=";", fieldnames=[
+        file_writer = csv.DictWriter(file, delimiter=";", fieldnames=[
             "url",
             "title",
             "timestamp",

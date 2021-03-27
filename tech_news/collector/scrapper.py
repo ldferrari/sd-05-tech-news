@@ -72,4 +72,4 @@ def scrape(fetcher, pages=1):
                     "categories": news_categories,
                 }
             )
-        return news
+    return news

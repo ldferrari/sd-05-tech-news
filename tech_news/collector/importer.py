@@ -2,6 +2,7 @@ import csv
 
 
 def csv_importer(filepath):
+    data_results = []
     valid_header = [
         "url",
         "title",
@@ -18,18 +19,15 @@ def csv_importer(filepath):
         assert filepath.endswith(".csv")
 
         with open(filepath) as file:
-            csv_reader = csv.reader(file, delimiter=";")
-            # separa o header do restante (referência: conteúdo)
-            header, *data = csv_reader
+            csv_reader = csv.DictReader(file, delimiter=";")
+            # print(csv_reader)
 
-            assert header == valid_header
+            assert csv_reader.fieldnames == valid_header
 
-            result = [
-                {header[i]: content[i] for i in range(len(content))}
-                for content in data
-            ]
+            for item in csv_reader:
+                data_results.append(item)
 
-            return result
+            return data_results
 
     # mesmo except para os 2 assertion errors (.csv & header)
     except AssertionError:

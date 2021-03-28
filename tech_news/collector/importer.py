@@ -1,5 +1,6 @@
 import csv
 
+
 def csv_importer(filepath):
     """Importa um arquivo CSV e retorna os dados como objeto."""
 

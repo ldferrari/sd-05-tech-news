@@ -4,7 +4,7 @@ from csv import reader
 def csv_importer(filepath):
     """Seu código deve vir aqui"""
     if not filepath.endswith(".csv"):
-        raise ValueError("Formato inválido")
+        raise ValueError("Formato invalido")
     try:
         with open(filepath) as file:
             file_read = reader(file, delimiter=";")

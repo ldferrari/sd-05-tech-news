@@ -18,6 +18,7 @@ def search_by_title(title):
 
     return news
 
+
 def search_by_date(date):
     """Busca o título e url de uma notícia, a partir da data."""
 

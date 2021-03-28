@@ -65,4 +65,6 @@ def scrape(fetcher, pages=1):
             all_articles.append(create_news(article, article_selector))
     return all_articles
 
-    # HONESTIDADE ACADEMICA: FOI UTILIZADO COMO BASE NA CRIAÇÃO DA FUNÇÃO DE CRIAR UMA NOVA NEWS... O PR DO PEDRO CALADO
+    # HONESTIDADE ACADEMICA:
+    # FOI UTILIZADO COMO BASE NA CRIAÇÃO DA FUNÇÃO DE CRIAR UMA NOVA NEWS...
+    # O PR DO PEDRO CALADO

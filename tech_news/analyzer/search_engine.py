@@ -30,7 +30,6 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
 
 
 if __name__ == "__main__":

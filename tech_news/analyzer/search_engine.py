@@ -1,4 +1,5 @@
 from tech_news import database
+from datetime import datetime
 
 
 def search_by_title(title):
@@ -16,12 +17,35 @@ def search_by_title(title):
     else:
         for article in news_by_title:
             news.append((article['title'], article['url']))
+            # parênteses a mais porque o retorno precisa ser uma tupla
 
         return news
 
 
 def search_by_date(date):
-    """Seu código deve vir aqui"""
+    news = []
+
+    try:
+        datetime.strptime(date, "%Y-%m-%d")
+
+        news_by_date = database.search_news({
+            "timestamp": {
+                "$regex": date
+            }
+        })
+
+        if len(news_by_date) == 0:
+            return []
+
+        else:
+            for article in news_by_date:
+                news.append((article['title'], article['url']))
+                # parênteses a mais porque o retorno precisa ser uma tupla
+
+            return news
+
+    except ValueError:
+        raise ValueError("Data inválida")
 
 
 def search_by_source(source):
@@ -30,3 +54,8 @@ def search_by_source(source):
 
 def search_by_category(category):
     """Seu código deve vir aqui"""
+
+# $regex operator
+# https://docs.mongodb.com/manual/reference/operator/query/regex/
+# método datetime.strptime
+# https://docs.python.org/3/library/datetime.html

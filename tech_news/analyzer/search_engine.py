@@ -6,11 +6,11 @@ def search_by_title(title):
     news = database.search_news({
       "title": {
         "$regex": title,
-        "$option": "i",
+        "$option": "-i",
       }
     })
     if len(news) == 0:
-        return news
+        return []
     else:
         return [(news[0]["title"], news[0]["url"])]
 

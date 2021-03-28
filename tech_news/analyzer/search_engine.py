@@ -60,4 +60,17 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    """Busca pelo título e url de uma notícia, a partir da categoria."""
+
+    news = []
+    news_by_category = search_news({
+        'categories': {
+            '$regex': category,
+            '$options': 'i'
+        }
+    })
+
+    for new in news_by_category:
+        news.append((new['title'], new['url']))
+
+    return news

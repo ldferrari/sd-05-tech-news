@@ -9,18 +9,18 @@ def csv_exporter(filepath):
 
     with open(filepath, "w") as file:
         csv_writer = csv.DictWriter(file, delimiter=";", fieldnames=[
-        'url',
-        'title',
-        'timestamp',
-        'writer',
-        'shares_count',
-        'comments_count',
-        'summary',
-        'sources',
-        'categories',
-    ])
+            'url',
+            'title',
+            'timestamp',
+            'writer',
+            'shares_count',
+            'comments_count',
+            'summary',
+            'sources',
+            'categories',
+        ])
         csv_writer.writeheader()
-        
+
         for news in find_news():
             article = {
                 "url": news["url"],

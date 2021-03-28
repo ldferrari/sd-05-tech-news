@@ -1,4 +1,5 @@
 from tech_news import database
+import datetime
 
 
 def search_by_title(title):
@@ -10,7 +11,15 @@ def search_by_title(title):
 
 
 def search_by_date(date):
-    """Seu código deve vir aqui"""
+    try:
+        # https://www.codevscolor.com/date-valid-check-python
+        year, month, day = date.split('-')
+        datetime.datetime(int(year), int(month), int(day))
+    except ValueError:
+        raise ValueError("Data inválida")
+    else:
+        news_by_date = database.search_news({"timestamp": {"$regex": date}})
+        return([(news["title"], news["url"]) for news in news_by_date])
 
 
 def search_by_source(source):
@@ -22,4 +31,4 @@ def search_by_category(category):
 
 
 if __name__ == "__main__":
-    search_by_title("Vamoscomtudo")
+    search_by_date("2020-11-23")

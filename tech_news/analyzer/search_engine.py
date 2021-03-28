@@ -49,7 +49,23 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    news = []
+    news_by_source = database.search_news({
+        "sources": {
+            "$regex": source,
+            "$options": "i"
+        }
+    })
+
+    if len(news_by_source) == 0:
+        return []
+
+    else:
+        for article in news_by_source:
+            news.append((article['title'], article['url']))
+            # parênteses a mais porque o retorno precisa ser uma tupla
+
+        return news
 
 
 def search_by_category(category):

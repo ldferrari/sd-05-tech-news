@@ -9,6 +9,7 @@ def csv_importer(filepath):
             reader = csv.DictReader(file, delimiter=";")
             for row in reader:
                 news.append(row)
+        print(news)
         return news
     except AssertionError:
         raise ValueError("Formato invalido")

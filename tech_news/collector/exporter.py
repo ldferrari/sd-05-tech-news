@@ -15,6 +15,8 @@ def csv_exporter(filepath):
         "categories",
     ]
 
+    # para conseguir acessar o banco é preciso inicializar o mongo no terminal
+    # > sudo service mongod start
     news = database.find_news()
 
     # try:

@@ -6,7 +6,7 @@ def search_by_title(title):
     news = database.search_news({
       "title": {
         "$regex": title,
-        "$option": "-i",
+        "$options": "i",
       }
     })
     if len(news) == 0:

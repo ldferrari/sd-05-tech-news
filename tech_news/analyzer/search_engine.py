@@ -69,7 +69,23 @@ def search_by_source(source):
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    news = []
+    news_by_category = database.search_news({
+        "categories": {
+            "$regex": category,
+            "$options": "i"
+        }
+    })
+
+    if len(news_by_category) == 0:
+        return []
+
+    else:
+        for article in news_by_category:
+            news.append((article['title'], article['url']))
+            # parênteses a mais porque o retorno precisa ser uma tupla
+
+        return news
 
 # $regex operator
 # https://docs.mongodb.com/manual/reference/operator/query/regex/

@@ -22,9 +22,10 @@ def search_by_title(title):
 
 def search_by_date(date):
     try:
-        format = "%Y-%m-d"
+        format = "%Y-%m-%d"
         datetime.strptime(date, format)
-        news = search_news({"timestamp": {"$regex": date}})
+        news = search_news({"timestamp": {"$regex": date, "$options": "im"}})
+        # print(news)
     except ValueError:
         raise ValueError("Data inválida")
     else:
@@ -51,3 +52,7 @@ def search_by_category(category):
     for noticia in news:
         resultado.append((noticia['title'], noticia['url']))
     return resultado
+
+# transparencia academica:
+# aprendi os regex com o colega paulo d'andrea e a referencia
+# https://docs.mongodb.com/manual/reference/operator/query/regex/

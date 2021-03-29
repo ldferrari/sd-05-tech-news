@@ -25,7 +25,12 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    # https://docs.mongodb.com/manual/reference/operator/query/regex/
+    # options i - Case insensitivity to match upper and lower cases 
+    busca = search_news({"sources": {"$regex": source, "$options": "i"}})
+    if len(busca) == 0:
+        return []
+    return [(busca[0]["title"], busca[0]["url"])]
 
 
 def search_by_category(category):

@@ -15,5 +15,4 @@ def fetch_content(url, timeout=3, delay=0.5):
     except requests.Timeout:
         return ""
 
-
-def scrape(fetcher, pages=1):
+    # def scrape(fetcher, pages=1):

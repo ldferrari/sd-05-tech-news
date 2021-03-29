@@ -1,10 +1,13 @@
-from tech_news import database
 import csv
+from tech_news import database
 
 
 def csv_exporter(filepath):
 
-    valid_header = [
+
+    if not filepath.endswith(".csv"):
+        raise ValueError("Formato invalido")
+    headers = [
         "url",
         "title",
         "timestamp",
@@ -16,19 +19,16 @@ def csv_exporter(filepath):
         "categories",
     ]
 
-    if not filepath.endswith(".csv"):
-        raise ValueError("Formato invalido")
-
     with open(filepath, "w") as file:
         csv_writer = csv.DictWriter(
-            file, fieldnames=valid_header, delimiter=";"
+            file, fieldnames=headers, delimiter=";"
         )
 
         news_db = database.find_news()
-        for linha in news_db:
-            for chave in linha:
-                if type(linha[chave]) == list:
-                    linha[chave] = ",".join(linha[chave])
+        for new in news_db:
+            for chave in new:
+                if type(new[chave]) == list:
+                    new[chave] = ",".join(new[chave])
 
         csv_writer.writeheader()
         csv_writer.writerows(news_db)

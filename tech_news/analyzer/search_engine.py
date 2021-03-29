@@ -1,5 +1,17 @@
+from tech_news import database
+
+
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    busca = database.search_news(
+        {"title": {"$regex": title, "$options": "-i"}}
+    )
+    if len(busca) == 0:
+        return []
+
+    news = []
+    for new in busca:
+        news.append((new["title"], new["url"]))
+    return news
 
 
 def search_by_date(date):

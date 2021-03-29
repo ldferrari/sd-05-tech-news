@@ -26,8 +26,8 @@ def scrape(fetcher, pages=1):
         news_urls = selector.css(
             "div.tec--list__item > article > figure > a::attr(href)"
         ).getall()
-        for new_url in news_urls:
-            response_new = fetcher(new_url)
+        for single_url in news_urls:
+            response_new = fetcher(single_url)
             selector_new = Selector(text=response_new)
             build_scrap = builder(selector_new)
             corrected_scrap = correction(
@@ -37,7 +37,7 @@ def scrape(fetcher, pages=1):
             )
 
             new_result = {
-                "url": new_url,
+                "url": single_url,
                 "title": build_scrap["title"],
                 "timestamp": build_scrap["timestamp"],
                 "writer": build_scrap["writer"],

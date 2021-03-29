@@ -4,7 +4,6 @@ from tech_news import database
 
 def csv_exporter(filepath):
 
-
     if not filepath.endswith(".csv"):
         raise ValueError("Formato invalido")
     headers = [
@@ -20,9 +19,7 @@ def csv_exporter(filepath):
     ]
 
     with open(filepath, "w") as file:
-        csv_writer = csv.DictWriter(
-            file, fieldnames=headers, delimiter=";"
-        )
+        csv_writer = csv.DictWriter(file, fieldnames=headers, delimiter=";")
 
         news_db = database.find_news()
         for new in news_db:

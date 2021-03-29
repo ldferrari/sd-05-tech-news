@@ -1,74 +1,76 @@
 import requests
-from time import sleep
 from parsel import Selector
+from time import sleep
+
+tipos = {
+    "card": ".tec--card",
+    "link": "div.tec--list__item > article > figure > a::attr(href)",
+    "title": ".tec--card__title",
+    "shares_count": "div.tec--toolbar__item:nth-child(1)::text",
+    "comments_count": "#js-comments-btn::attr(data-count)",
+    "sources": ".z--mb-16 > div > a::text",
+    "categories": "a.tec--badge--primary::text",
+    "summary": ".tec--article__body > p:nth-child(1)::text",
+}
 
 
 def fetch_content(url, timeout=3, delay=0.5):
+    """
+    Seu código deve vir aqui.
+    url: url a ser acessada
+    timeout: tempo de espera da requisição
+    delay: tempo de espera antes de efetuar uma requisição
+    """
     try:
-        # tem que passar timeout=timeout por causa do parametro nomeavel
-        # se nao fizer a importação usando o from dá errado =( 
-        sleep(delay)
         response = requests.get(url, timeout=timeout)
-    except requests.exceptions.ReadTimeout:
+    except requests.RequestException:
+        print("deu ruim mano")
         return ""
     else:
+        if response.status_code != 200:
+            return ""
+        sleep(delay)
         return response.text
 
 
 def scrape(fetcher, pages=1):
-    url = 'https://www.tecmundo.com.br/novidadess'
-    items = []
-    links = []
-    nxSelector = ".tec--list > a.tec--btn::attr(href)"
-    next_button = Selector(text=fetcher).css(nxSelector).get()
-    print(url)
-    print(links)
-    print(next_button)
-    
-    for _ in range(pages):
-        items.append(one_news(fetch_content()))
+   
+    url = "https://www.tecmundo.com.br/novidadess"
+    news_links = []
+    raw_news = []
+    raspada = []
+    for pageId in range(pages):
+        selector = Selector(text=fetcher(url))
+        news_links.extend(selector.css(tipos["link"]).getall())
+        url += f"?pages={pageId+2}"
+    for link in news_links:
+        raw_news.append({"url": link, "response": fetcher(link)})
+    for news in raw_news:
+        raspada.append(raspar(news))
+    return raspada
 
 
-def list_news(fetcher):
-    selected = Selector(text=fetcher)
-    linkSelector = ".tec--card__title > .tec--card__title__link ::attr(href)"
-    link = selected.css(linkSelector).getall()
-    return(link)
-
-
-def one_news(fetcher):
-    selected = Selector(text=fetcher)
-    titleSelector = ".tec--article__header__title::text"
-    title = selected.css(titleSelector).getall()
-
-    timeStampSelector = "div .tec--timestamp__item time::attr(datetime)"
-    timeStamp = selected.css(timeStampSelector).getall()[0]
-
-    writerSelector = "div.tec--author__info > p > a::text"
-    writer = selected.css(writerSelector).getall()[0]
-
-    scSelector = "div.tec--toolbar__item ::text"
-    sc = selected.css(scSelector).getall()[0].strip().split(' ')[0]
-
-    ccSelector = "#js-comments-btn::text"
-    cc = selected.css(ccSelector).getall()[1].strip().split(' ')[0]
-
-    summarySelector = "div.tec--article__body > p:nth-child(1)::text"
-    summary = selected.css(summarySelector).get().strip()
-
-    sourcesSelector = "div > a.tec--badge ::text"
-    sources = selected.css(sourcesSelector).getall()[0].strip()
-
-    categoriesSelector = "#js-categories > a ::text"
-    categories1 = selected.css(categoriesSelector).getall()
-    categories = [' '.join(src.split()) for src in categories1]
+def raspar(news):
+    selector = Selector(text=news["response"])
+    title = selector.css("#js-article-title::text").get().strip()
+    timestamp = selector.css("#js-article-date::attr(datetime)").get().strip()
+    writer = selector.css(".tec--author__info__link::text").get()
+    shares_count = selector.css(tipos["shares_count"]).get().strip()
+    shares_count = int(shares_count.split()[0])
+    summary = selector.css(tipos["summary"]).get().strip()
+    comments_count = selector.css(tipos["comments_count"]).get()
+    comments_count = int(comments_count)
+    sources = selector.css(tipos["sources"]).getall()
+    sources = [src for src in sources]
+    categories = selector.css(tipos["categories"]).getall()
     return {
-        "title": title[0],
-        "timeStamp": timeStamp,
+        "url": news["url"],
+        "title": title,
+        "timestamp": timestamp,
         "writer": writer,
-        "sharesCount": int(sc),
-        "comments_count": int(cc),
+        "shares_count": shares_count,
         "summary": summary,
+        "comments_count": comments_count,
         "sources": sources,
-        "categories": categories
+        "categories": categories,
     }

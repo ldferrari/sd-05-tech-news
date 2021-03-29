@@ -32,4 +32,3 @@ def csv_exporter(filepath):
                 "categories": ",".join(news["categories"]),
             }
             escreve_arq.writerow(lista)
-            

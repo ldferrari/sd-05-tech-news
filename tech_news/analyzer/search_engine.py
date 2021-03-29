@@ -3,9 +3,7 @@ from datetime import datetime
 
 
 def search_by_title(title):
-    busca = database.search_news(
-        {"title": {"$regex": title, "$options": "-i"}}
-    )
+    busca = database.search_news({"title": {"$regex": title, "$options": "i"}})
     if len(busca) == 0:
         return []
 
@@ -32,7 +30,17 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    busca = database.search_news(
+        {"sources": {"$regex": source, "$options": "i"}}
+    )
+
+    if len(busca) == 0:
+        return []
+
+    news = []
+    for new in busca:
+        news.append((new["title"], new["url"]))
+    return news
 
 
 def search_by_category(category):

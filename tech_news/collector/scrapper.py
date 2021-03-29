@@ -17,17 +17,15 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 def scrape(fetcher, pages=1):
     items = []
-    Selector(text=fetcher).css(".tec--list > a.tec--btn::attr(href)").get()
-    'tec--list'
+    next_button = Selector(text=fetcher).css(".tec--list > a.tec--btn::attr(href)").get()
     for _ in range(pages):
-        items.append(one_news(fetch_content(url)))
+        items.append(one_news(fetch_content()))
 
 
 def list_news(fetcher):
     selected = Selector(text=fetcher)
     linkSelector = ".tec--card__title > .tec--card__title__link ::attr(href)"
     link = selected.css(linkSelector).getall()
-    print(selected.css(".tec--list > a.tec--btn::attr(href)").get())
     return(link)
 
 
@@ -42,11 +40,11 @@ def one_news(fetcher):
     writerSelector = "div.tec--author__info > p > a::text"
     writer = selected.css(writerSelector).getall()[0]
 
-    sharesCountSelector = "div.tec--toolbar__item ::text"
-    sharesCount = selected.css(sharesCountSelector).getall()[0].strip().split(' ')[0]
+    scSelector = "div.tec--toolbar__item ::text"
+    sc = selected.css(scSelector).getall()[0].strip().split(' ')[0]
 
-    comments_countSelector = "#js-comments-btn::text"
-    comments_count = selected.css(comments_countSelector).getall()[1].strip().split(' ')[0]
+    ccSelector = "#js-comments-btn::text"
+    cc = selected.css(ccSelector).getall()[1].strip().split(' ')[0]
 
     summarySelector = "div.tec--article__body > p:nth-child(1)::text"
     summary = selected.css(summarySelector).get().strip()
@@ -61,8 +59,8 @@ def one_news(fetcher):
         "title": title[0],
         "timeStamp": timeStamp,
         "writer": writer,
-        "sharesCount": int(sharesCount),
-        "comments_count": int(comments_count),
+        "sharesCount": int(sc),
+        "comments_count": int(cc),
         "summary": summary,
         "sources": sources,
         "categories": categories

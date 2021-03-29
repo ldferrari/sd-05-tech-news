@@ -64,4 +64,3 @@ def scrape(fetcher=fetch_content, pages=1):
         response = fetcher(url_artigo)
         resultado.append(container(url_artigo, response))
     return resultado
-    

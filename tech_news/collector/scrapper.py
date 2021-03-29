@@ -16,8 +16,15 @@ def fetch_content(url, timeout=3, delay=0.5):
 
 
 def scrape(fetcher, pages=1):
+    url = 'https://www.tecmundo.com.br/novidadess'
     items = []
-    next_button = Selector(text=fetcher).css(".tec--list > a.tec--btn::attr(href)").get()
+    links = []
+    nxSelector = ".tec--list > a.tec--btn::attr(href)"
+    next_button = Selector(text=fetcher).css(nxSelector).get()
+    print(url)
+    print(links)
+    print(next_button)
+    
     for _ in range(pages):
         items.append(one_news(fetch_content()))
 

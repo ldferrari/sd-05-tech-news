@@ -10,7 +10,7 @@ def fetch_content(url, timeout=3, delay=0.5):
     except (requests.HTTPError, requests.ReadTimeout):
         return ""
     else:
-        return response.text
+        return response.text    
 
 
 def container(url_page, res_article):
@@ -56,7 +56,7 @@ def scrape(fetcher=fetch_content, pages=1):
         news_url.extend(select.css(
             "div.tec--list h3 a::attr(href)"
         ).getall())
-        url_base += f"?pages={page+2}"
+        url_base += f"?pages={page+1}"
     for url_page in news_url:
         res_article = fetcher(url_page)
         results.append(container(url_page, res_article))

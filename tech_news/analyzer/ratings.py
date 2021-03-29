@@ -6,7 +6,7 @@ def top_5_news():
     """Busca as 5 noticias com mais compartilhamentos e curtidas."""
     top_five = []
 
-    news = (db.news.find({}).   ([
+    news = (db.news.find({}).sort([
         ('shares_count', pymongo.DESCENDING),
         ('comments_count', pymongo.DESCENDING),
         ('title', pymongo.ASCENDING)

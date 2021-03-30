@@ -11,7 +11,6 @@ def csv_importer(filepath):
             noticias = csv.DictReader(file, delimiter=";")
 
             for noticia in noticias:
-                print("eis a noticia", noticia)
                 saida.append(noticia)
         return saida
     except FileNotFoundError:

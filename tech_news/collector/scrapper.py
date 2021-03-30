@@ -21,11 +21,11 @@ def scrape(fetcher, pages=1):
     for page in range(pages):
         response = fetcher(url)
         selector = Selector(text=response)
-        array_noticias = selector.css(
+        lista_noticias = selector.css(
             "div.tec--list__item > article > figure > a::attr(href)"
             ).getall()
-#        print(array_noticias)
-        for url_noticia in array_noticias:
+#        print(lista_noticias)
+        for url_noticia in lista_noticias:
             print(url_noticia)
             response_noticia = fetcher(url_noticia)
             selector_noticia = Selector(text=response_noticia)

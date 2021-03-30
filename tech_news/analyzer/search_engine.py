@@ -35,11 +35,25 @@ def search_by_date(date):
 
 
 def search_by_source(source):
-    """Seu código deve vir aqui"""
+    noticias = database.search_news({
+        "sources": {
+            "$regex": source,
+            "$options": "i",
+        }
+    })
+    return [(item["title"], item["url"]) for item in noticias]
 
 
 def search_by_category(category):
-    """Seu código deve vir aqui"""
+    noticias = database.search_news({
+        "categories": {
+            "$regex": category,
+            "$options": "i",
+        }
+    })
+    return [(item["title"], item["url"]) for item in noticias]
+
 
 #   ref1: https://docs.mongodb.com/manual/reference/operator/query/regex/
 #   ref2: https://www.programiz.com/python-programming/datetime/strptime
+#   https://docs.mongodb.com/manual/reference/operator/query/in/

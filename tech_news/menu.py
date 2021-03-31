@@ -13,14 +13,12 @@ from tech_news.analyzer.ratings import top_5_categories, top_5_news
 
 
 def collector_menu():
-    mensagem = ('''
+    mensagem = '''
 Selecione uma das opções a seguir:
-
-1 - Importar notícias a partir de um arquivo CSV;
-2 - Exportar notícias para CSV;
-3 - Raspar notícias online;
-4 - Sair\n''')
-
+ 1 - Importar notícias a partir de um arquivo CSV;
+ 2 - Exportar notícias para CSV;
+ 3 - Raspar notícias online;
+ 4 - Sair.'''
     option = input(mensagem)
 
     if option == "1":
@@ -42,17 +40,15 @@ Selecione uma das opções a seguir:
 
 
 def analyzer_menu():
-    mensagem = ('''
+    mensagem = '''
 Selecione uma das opções a seguir:
-
-1 - Buscar notícias por título;
-2 - Buscar notícias por data;
-3 - Buscar notícias por fonte;
-4 - Buscar notícias por categoria;
-5 - Listar top 5 notícias;
-6 - Listar top 5 categorias;
-7 - Sair.\n''')
-
+ 1 - Buscar notícias por título;
+ 2 - Buscar notícias por data;
+ 3 - Buscar notícias por fonte;
+ 4 - Buscar notícias por categoria;
+ 5 - Listar top 5 notícias;
+ 6 - Listar top 5 categorias;
+ 7 - Sair.'''
     option = input(mensagem)
     switch(int(option))
 

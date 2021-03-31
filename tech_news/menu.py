@@ -54,7 +54,7 @@ Selecione uma das opções a seguir:
 7 - Sair.\n''')
 
     option = input(mensagem)
-    switch(option)
+    switch(int(option))
 
 
 def switch(option):
@@ -68,7 +68,8 @@ def switch(option):
         6: case_6,
         7: case_7,
     }
-    func = switcher.get(int(option), lambda: sys.stderr.write("Opção inválida\n"))
+    func = switcher.get(
+        int(option), lambda: sys.stderr.write("Opção inválida\n"))
     print(func())
 
 
